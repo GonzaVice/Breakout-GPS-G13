@@ -42,7 +42,9 @@ def main():
         ball.draw(render_surface)
 
         # Escalar al tamaño de la ventana
-        scaled_surface = pygame.transform.scale(render_surface, (int(WIDTH * scale_x), int(HEIGHT * scale_y)))
+        scaled_surface = pygame.transform.scale(render_surface,
+                                                (int(WIDTH * scale_x),
+                                                 int(HEIGHT * scale_y)))
         screen.blit(scaled_surface, (0, 0))
 
         pygame.display.flip()
