@@ -1,6 +1,7 @@
 import pygame
 from settings import WIDTH, HEIGHT, TITLE, FPS
 from paddle import Paddle
+from ball import Ball
 
 def main():
 
@@ -13,7 +14,10 @@ def main():
 
     # Jugador
     paddle = Paddle(x=WIDTH//2 - 16, y=HEIGHT - 20)
+    # Pelota
+    ball = Ball(x=WIDTH//2 - 4, y=HEIGHT//2 - 4)
 
+    # Comienza el loop
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -21,13 +25,15 @@ def main():
         
         # Movimiento por frame
         paddle.move()
+        ball.move()
+        ball.check_collision(paddle)
 
         # Dibujo por frame
         screen.fill("black")
         paddle.draw(screen)
+        ball.draw(screen)
 
         pygame.display.flip()
-
         clock.tick(FPS)
     pygame.quit()
 

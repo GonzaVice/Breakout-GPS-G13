@@ -5,7 +5,7 @@ class Paddle:
     def __init__(self, x, y):
         self.image = pygame.image.load("assets/images/paddle.png")
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.speed = 5
+        self.speed = 4
     
     def move(self):
         keys = pygame.key.get_pressed()
