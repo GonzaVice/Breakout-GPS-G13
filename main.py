@@ -49,10 +49,10 @@ def main():
         ball.move()
 
         # Chekear colisiones por frame
-        ball.check_collision(paddle)
         for brick in bricks[:]:
-            if brick.check_collision(ball):
+            if ball.check_collision(brick):
                 bricks.remove(brick)
+        ball.check_collision(paddle)
 
         # Dibujo por frame
         render_surface.fill("black")

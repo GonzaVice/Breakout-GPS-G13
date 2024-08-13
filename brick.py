@@ -10,7 +10,4 @@ class Brick:
     
     # Cuando choque con la pelota
     def check_collision(self, ball):
-        if self.rect.colliderect(ball.rect):
-            ball.bounce()
-            return True
-        return False
+        return self.rect.colliderect(ball.rect)
