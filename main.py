@@ -1,10 +1,21 @@
 import pygame
-from settings import WIDTH, HEIGHT, TITLE, FPS
+from settings import WIDTH, HEIGHT, TITLE, FPS, BRICK_WIDTH, BRICK_HEIGHT, \
+    WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES
 from paddle import Paddle
 from ball import Ball
+from brick import Brick
 
-WINDOW_WIDTH = 960
-WINDOW_HEIGHT = 720
+
+def create_bricks():
+    bricks = []
+    for row in range(6):
+        for col in range(20):
+            x = col * BRICK_WIDTH
+            y = row * BRICK_HEIGHT
+            image = BRICK_IMAGES[row]
+            brick = Brick(x, y, image)
+            bricks.append(brick)
+    return bricks
 
 def main():
 
@@ -24,6 +35,8 @@ def main():
     paddle = Paddle(x=WIDTH//2 - 16, y=HEIGHT - 20)
     # Pelota
     ball = Ball(x=WIDTH//2 - 4, y=HEIGHT//2 - 4)
+    # Ladrillos
+    bricks = create_bricks()
 
     # Comienza el loop
     while running:
@@ -34,12 +47,19 @@ def main():
         # Movimiento por frame
         paddle.move()
         ball.move()
+
+        # Chekear colisiones por frame
         ball.check_collision(paddle)
+        for brick in bricks[:]:
+            if brick.check_collision(ball):
+                bricks.remove(brick)
 
         # Dibujo por frame
         render_surface.fill("black")
         paddle.draw(render_surface)
         ball.draw(render_surface)
+        for brick in bricks:
+            brick.draw(render_surface)
 
         # Escalar al tamaño de la ventana
         scaled_surface = pygame.transform.scale(render_surface,
