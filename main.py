@@ -1,18 +1,24 @@
 import pygame
+from settings import WIDTH, HEIGHT, TITLE, FPS
 
-pygame.init()
-screen = pygame.display.set_mode((320,240))
-clock = pygame.time.Clock()
-running = True
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption(TITLE)
+    clock = pygame.time.Clock()
+    running = True
 
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-    
-    screen.fill("purple")
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        
+        screen.fill("purple")
 
-    pygame.display.flip()
+        pygame.display.flip()
 
-    clock.tick(60)
-pygame.quit()
+        clock.tick(FPS)
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()

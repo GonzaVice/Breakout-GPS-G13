@@ -1,0 +1,4 @@
+WIDTH = 320
+HEIGHT = 240
+TITLE = "Breakout G13"
+FPS = 60
