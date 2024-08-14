@@ -8,7 +8,7 @@ class Ball:
     def __init__(self, x, y):
         self.image = pygame.image.load("assets/images/ball.png")
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.speed_x = 1
+        self.speed_x = 3
         self.speed_y = -2
     
     def move(self):
@@ -34,7 +34,26 @@ class Ball:
                     self.rect.bottom = obj.rect.top
                 else:
                     self.rect.top = obj.rect.bottom
-                self.speed_y = -self.speed_y
+
+                # Cambiar dirección horizontal basada en la posición de la colisión
+                hit_pos = self.rect.centerx - obj.rect.left
+                paddle_section = obj.rect.width // 5  # Divide el paddle en 5 secciones
+
+                if hit_pos < paddle_section:
+                    self.speed_x = -3 # Más hacia la izquierda
+                    self.speed_y = -2
+                elif hit_pos < 2 * paddle_section:
+                    self.speed_x = -2 # Levemente hacia la izquierda
+                    self.speed_y = -3
+                elif hit_pos < 3 * paddle_section:
+                    self.speed_x = 0  # Rebote central, sin cambio horizontal
+                    self.speed_y = -4
+                elif hit_pos < 4 * paddle_section:
+                    self.speed_x = 2 # Levemente hacia la derecha
+                    self.speed_y = -3
+                else:
+                    self.speed_x = 3 # Más hacia la derecha
+                    self.speed_y = -2
 
             # Si es un ladrillo (Lógica con bugs, necesita arreglarse)
             elif isinstance(obj, Brick):
