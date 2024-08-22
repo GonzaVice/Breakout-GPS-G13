@@ -10,6 +10,8 @@ class Ball:
         self.rect = self.image.get_rect(topleft=(x, y))
         self.speed_x = 3
         self.speed_y = -2
+        self.is_still_col_hor = False
+        self.is_still_col_ver = False
     
     def move(self):
         self.rect.x += self.speed_x
@@ -17,11 +19,19 @@ class Ball:
 
         # Rebote de izquierda a derecha
         if self.rect.left <= 0 or self.rect.right >= WIDTH:
-            self.speed_x = -self.speed_x
+            if self.is_still_col_hor == False:
+                self.speed_x = -self.speed_x
+                self.is_still_col_hor = True
+        else:
+            self.is_still_col_hor = False
         
         # Rebote de arriba y abajo (NOTA: Hacer lógica de perder vidas más adelante)
         if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
-            self.speed_y = -self.speed_y
+            if self.is_still_col_ver == False:
+                self.speed_y = -self.speed_y
+                self.is_still_col_ver = True
+        else:
+            self.is_still_col_ver = False
     
     # Checkear colisión cuando la pelota choca con el paddle o los ladrillos
     def check_collision(self, obj):
