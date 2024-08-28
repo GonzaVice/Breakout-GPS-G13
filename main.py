@@ -1,5 +1,4 @@
 import pygame
-import time
 from settings import WIDTH, HEIGHT, TITLE, FPS, BRICK_WIDTH, BRICK_HEIGHT, \
     WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES
 from paddle import Paddle
@@ -26,7 +25,7 @@ def main():
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
-    freeze = False  # Freeze state to stop movement
+    freeze = False 
 
     # Resolución interna
     render_surface = pygame.Surface((WIDTH, HEIGHT))
@@ -54,7 +53,6 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Check if we need to freeze the game (in shoot mode)
         freeze = powerup_system.shoot_mode
 
         # Movimiento por frame
