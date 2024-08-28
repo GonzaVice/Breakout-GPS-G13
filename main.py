@@ -19,7 +19,6 @@ def create_bricks():
             bricks.append(brick)
     return bricks
 
-
 def main():
     # Setting inicial
     pygame.init()
@@ -45,8 +44,12 @@ def main():
     particle_system = ParticleSystem()
     powerup_system = PowerUpSystem()
 
+    # Comienza el loop
     while running:
-        for event in pygame.event.get():
+        keys = pygame.key.get_pressed()
+        events = pygame.event.get()
+
+        for event in events:
             if event.type == pygame.QUIT:
                 running = False
 
@@ -82,7 +85,7 @@ def main():
             ball.check_collision(paddle)
 
         # Update power-up system
-        powerup_system.update(paddle, balls)
+        powerup_system.update(paddle, balls, keys, events)
 
         # Update particles
         particle_system.update()
@@ -95,7 +98,7 @@ def main():
         for brick in bricks:
             brick.draw(render_surface)
 
-        powerup_system.draw(render_surface)
+        powerup_system.draw(render_surface, paddle)
         particle_system.draw(render_surface)
 
         # Escalar al tamaño de la ventana
