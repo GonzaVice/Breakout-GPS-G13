@@ -1,5 +1,6 @@
 import pygame
 import time
+from ball import Ball
 from settings import HEIGHT, WIDTH, POWERUP_IMAGES, AVAILABLE_POWERUPS, POWERUP_PROBABILITY
 
 class PowerUp:
@@ -28,7 +29,7 @@ class PowerUpSystem:
         powerup = PowerUp(x, y, powerup_type, image)
         self.active_powerups.append(powerup)
 
-    def update(self, paddle):
+    def update(self, paddle, balls):
         current_time = time.time()
 
         # Move and check collisions for power-ups
@@ -37,12 +38,16 @@ class PowerUpSystem:
             if powerup.rect.colliderect(paddle.rect):
                 effect_type = powerup.collect()
 
-                # Remove any active size or speed power-up before applying the new one
-                self.remove_conflicting_effects(effect_type, paddle)
+                if effect_type in ["expand", "shrink", "speed"]:
+                    # Handle the size/speed power-ups
+                    self.remove_conflicting_effects(effect_type, paddle)
+                    paddle.apply_powerup(effect_type)
+                    self.active_effects.append({"type": effect_type, "start_time": current_time, "target": paddle})
+                elif effect_type == "duplicate":
+                    self.apply_duplicate_powerup(balls)
+                elif effect_type == "shoot":
+                    self.apply_shoot_powerup(balls, paddle)
 
-                # Apply the new power-up
-                paddle.apply_powerup(effect_type)
-                self.active_effects.append({"type": effect_type, "start_time": current_time, "target": paddle})
                 self.active_powerups.remove(powerup)
             elif powerup.rect.top > HEIGHT:  # Remove power-ups that go off-screen
                 self.active_powerups.remove(powerup)
@@ -55,6 +60,22 @@ class PowerUpSystem:
                 elif effect["type"] == "speed":
                     effect["target"].speed = 4  # Reset to original speed
                 self.active_effects.remove(effect)
+
+    def apply_duplicate_powerup(self, balls):
+        # Duplicate each ball in the game
+        new_balls = []
+        for ball in balls:
+            new_ball = Ball(ball.rect.x, ball.rect.y)
+            new_ball.speed_x = -ball.speed_x
+            new_ball.speed_y = ball.speed_y
+            new_balls.append(new_ball)
+        balls.extend(new_balls)
+
+    def apply_shoot_powerup(self, balls, paddle):
+        # Allow the player to shoot a new ball using the arrow keys
+        new_ball = Ball(paddle.rect.centerx, paddle.rect.top)
+        balls.append(new_ball)
+        # The movement of the ball will be handled later by capturing arrow key inputs in the main game loop
 
     def remove_conflicting_effects(self, new_effect_type, paddle):
         """Remove any active effects that conflict with the new power-up type."""

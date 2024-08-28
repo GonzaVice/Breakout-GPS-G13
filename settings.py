@@ -23,11 +23,11 @@ BRICK_IMAGES = [
 POWERUP_IMAGES = {
     'expand': "assets/images/powerups/expand.png",
     'shrink': "assets/images/powerups/shrink.png",
-    'speed': "assets/images/powerups/speed.png"
+    'speed': "assets/images/powerups/speed.png",
+    'duplicate': "assets/images/powerups/duplicate.png",
+    'shoot': "assets/images/powerups/shoot.png"
 }
 
-# List of available power-ups
-AVAILABLE_POWERUPS = ['expand', 'shrink', 'speed']
+AVAILABLE_POWERUPS = ['expand', 'shrink', 'speed', 'duplicate', 'shoot']
 
-# Probability of a power-up appearing (from 0 to 1)
-POWERUP_PROBABILITY = 0.2
+POWERUP_PROBABILITY = 1
