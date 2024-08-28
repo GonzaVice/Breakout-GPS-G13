@@ -1,11 +1,41 @@
 import pygame
+import json
 from settings import WIDTH, HEIGHT, TITLE, FPS, BRICK_WIDTH, BRICK_HEIGHT, \
-    WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES
+    WINDOW_WIDTH, WINDOW_HEIGHT
 from paddle import Paddle
 from ball import Ball
 from brick import Brick
 from particle import ParticleSystem
 from powerup import PowerUpSystem
+
+class LevelLoader:
+    def __init__(self, filename):
+        self.filename = filename
+        self.bricks = []
+
+    def load_level(self):
+        try:
+            with open(self.filename, 'r') as file:
+                level_data = json.load(file)
+                self.parse_level_data(level_data)
+        except FileNotFoundError:
+            print(f"Error: The file {self.filename} was not found.")
+        except json.JSONDecodeError:
+            print(f"Error: The file {self.filename} could not be parsed.")
+
+    def parse_level_data(self, level_data):
+        self.bricks = []
+        for brick_data in level_data.get("bricks", []):
+            x = brick_data["x"]
+            y = brick_data["y"]
+            hit_points = brick_data["hit_points"]
+            has_powerup = brick_data["has_powerup"]
+
+            brick = Brick(x, y, hit_points, is_powerup_brick=has_powerup)
+            self.bricks.append(brick)
+
+    def get_bricks(self):
+        return self.bricks
 
 def create_bricks():
     bricks = []
@@ -14,7 +44,7 @@ def create_bricks():
             x = col * BRICK_WIDTH
             y = row * BRICK_HEIGHT
             hit_points = 6 - row
-            brick = Brick(x, y, hit_points, brick_images=BRICK_IMAGES)
+            brick = Brick(x, y, hit_points)
             bricks.append(brick)
     return bricks
 
@@ -39,8 +69,10 @@ def main():
     balls = [Ball(x=WIDTH//2 - 4, y=HEIGHT//2 - 4)]
 
     # Ladrillos
-    bricks = create_bricks()
-
+    level_loader = LevelLoader("custom_level.json")
+    level_loader.load_level()
+    bricks = level_loader.get_bricks()
+    
     particle_system = ParticleSystem()
     powerup_system = PowerUpSystem()
 
