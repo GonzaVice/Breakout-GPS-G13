@@ -19,43 +19,83 @@ class LevelEditor:
         self.is_drawing = False
 
         # Define UI layout
-        self.ui_container = pygame_gui.elements.UIPanel(relative_rect=pygame.Rect((int(WINDOW_WIDTH * 0.7), 0), (int(WINDOW_WIDTH * 0.3), WINDOW_HEIGHT)),
-                                                        manager=self.manager)
+        display_width = int(WINDOW_WIDTH * 0.7)
+        display_height = int(WINDOW_HEIGHT * 0.7)
 
-        # UI elements
-        self.mode_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((20, WINDOW_HEIGHT - 70), (250, 50)),
-                                                      text=f"Mode: {self.current_mode.capitalize()}",
-                                                      manager=self.manager,
-                                                      container=self.ui_container)
-        self.hit_points_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((20, WINDOW_HEIGHT - 110), (250, 50)),
-                                                            text=f"Hit Points: {self.selected_hit_points}",
-                                                            manager=self.manager,
-                                                            container=self.ui_container)
-        self.powerup_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((20, WINDOW_HEIGHT - 150), (250, 50)),
-                                                         text=f"Powerup: {'On' if self.selected_powerup else 'Off'}",
-                                                         manager=self.manager,
-                                                         container=self.ui_container)
-        self.file_name_label = pygame_gui.elements.UILabel(relative_rect=pygame.Rect((20, 20), (250, 50)),
-                                                           text=f"File: {self.level_name}",
-                                                           manager=self.manager,
-                                                           container=self.ui_container)
-        self.load_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((20, 90), (100, 50)),
-                                                        text='Load Level',
-                                                        manager=self.manager,
-                                                        container=self.ui_container)
-        self.save_button = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((140, 90), (100, 50)),
-                                                        text='Save Level',
-                                                        manager=self.manager,
-                                                        container=self.ui_container)
-        self.file_name_input = pygame_gui.elements.UITextEntryLine(relative_rect=pygame.Rect((20, 160), (220, 50)),
-                                                                   manager=self.manager,
-                                                                   container=self.ui_container)
+        # UI container on the right side
+        self.ui_container = pygame_gui.elements.UIPanel(
+            relative_rect=pygame.Rect((display_width, 0), (int(WINDOW_WIDTH * 0.3), WINDOW_HEIGHT)),
+            manager=self.manager
+        )
+
+        # Bottom container below the level display
+        self.bottom_container = pygame_gui.elements.UIPanel(
+            relative_rect=pygame.Rect((0, display_height), (display_width , WINDOW_HEIGHT - display_height)),
+            manager=self.manager
+        )
+
+        # Bottom buttons with icons and colors
+        self.mode_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((20, 10), (150, 50)),
+            text=f"Mode: {self.current_mode.capitalize()}",
+            manager=self.manager,
+            container=self.bottom_container,
+            object_id="#mode_button"
+        )
+        self.hit_points_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((200, 10), (150, 50)),
+            text=f"HP: {self.selected_hit_points}",
+            manager=self.manager,
+            container=self.bottom_container,
+            object_id="#hit_points_button"
+        )
+        self.powerup_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((380, 10), (150, 50)),
+            text=f"Powerup: {'On' if self.selected_powerup else 'Off'}",
+            manager=self.manager,
+            container=self.bottom_container,
+            object_id="#powerup_button"
+        )
+
+        self.set_button_styles()
+
+        self.file_name_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((20, 20), (250, 50)),
+            text=f"File: {self.level_name}",
+            manager=self.manager,
+            container=self.ui_container
+        )
+        self.load_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((20, 90), (100, 50)),
+            text='Load Level',
+            manager=self.manager,
+            container=self.ui_container
+        )
+        self.save_button = pygame_gui.elements.UIButton(
+            relative_rect=pygame.Rect((140, 90), (100, 50)),
+            text='Save Level',
+            manager=self.manager,
+            container=self.ui_container
+        )
+        self.file_name_input = pygame_gui.elements.UITextEntryLine(
+            relative_rect=pygame.Rect((20, 160), (220, 50)),
+            manager=self.manager,
+            container=self.ui_container
+        )
         self.file_name_input.set_text(self.level_name)
+
+    def set_button_styles(self):
+        # Customize button appearances via themes
+        self.manager.get_theme().load_theme('./theme.json')
+        # Make sure to update the buttons with the new theme
+        self.mode_button.rebuild()
+        self.hit_points_button.rebuild()
+        self.powerup_button.rebuild()
 
     def add_brick(self, x, y):
         # Remove any existing brick at the same position
         self.remove_brick(x, y)
-        
+
         # Add the new brick
         brick = {
             "x": x,
@@ -99,9 +139,9 @@ class LevelEditor:
                 screen.blit(powerbrick_texture, (brick["x"], brick["y"]))
 
     def update_ui(self):
-        self.mode_label.set_text(f"Mode: {self.current_mode.capitalize()}")
-        self.hit_points_label.set_text(f"Hit Points: {self.selected_hit_points}")
-        self.powerup_label.set_text(f"Powerup: {'On' if self.selected_powerup else 'Off'}")
+        self.mode_button.set_text(f"Mode: {self.current_mode.capitalize()}")
+        self.hit_points_button.set_text(f"HP: {self.selected_hit_points}")
+        self.powerup_button.set_text(f"Powerup: {'On' if self.selected_powerup else 'Off'}")
 
 
 def run_editor():
@@ -180,6 +220,15 @@ def run_editor():
                     editor.save_level(editor.file_name_input.get_text())
                 elif event.ui_element == editor.load_button:
                     editor.load_level(editor.file_name_input.get_text())
+                elif event.ui_element == editor.mode_button:
+                    editor.current_mode = "remove" if editor.current_mode == "add" else "add"
+                    editor.update_ui()
+                elif event.ui_element == editor.hit_points_button:
+                    editor.selected_hit_points = (editor.selected_hit_points % 6) + 1
+                    editor.update_ui()
+                elif event.ui_element == editor.powerup_button:
+                    editor.selected_powerup = not editor.selected_powerup
+                    editor.update_ui()
 
             manager.process_events(event)
 
@@ -188,9 +237,9 @@ def run_editor():
 
         editor.draw(render_surface)
 
-        # Draw the scaled level display within the left part of the screen
+        # Draw the scaled level display within the level display container
         scaled_surface = pygame.transform.scale(render_surface, (int(WIDTH * scale_x), int(HEIGHT * scale_y)))
-        screen.blit(scaled_surface, (0, 0))
+        screen.blit(scaled_surface, (0, 0))  # Offset to match container position
 
         manager.update(time_delta)
         manager.draw_ui(screen)
