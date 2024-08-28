@@ -2,7 +2,7 @@ import pygame
 import time
 import math
 from ball import Ball
-from settings import HEIGHT, WIDTH, POWERUP_IMAGES, AVAILABLE_POWERUPS, POWERUP_PROBABILITY
+from settings import HEIGHT, WIDTH, POWERUP_IMAGES
 
 class PowerUp:
     def __init__(self, x, y, powerup_type, image):
@@ -40,8 +40,7 @@ class PowerUpSystem:
             self._update_shoot_mode(paddle, balls, keys, events)
         else:
             self._update_powerups(paddle, balls, current_time)
-
-        self._update_effects(current_time, paddle)
+            self._update_effects(current_time, paddle)
 
     def _update_powerups(self, paddle, balls, current_time):
         for powerup in self.active_powerups[:]:
@@ -95,14 +94,14 @@ class PowerUpSystem:
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self._shoot_new_ball(paddle, balls)
-                self.shoot_mode = False
+                self.shoot_mode = False 
 
     def _shoot_new_ball(self, paddle, balls):
         speed = 5
         speed_x = speed * math.cos(self.pointer_angle)
         speed_y = speed * math.sin(self.pointer_angle)
 
-        new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 10)  # Spawn the ball just above the paddle
+        new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 10)
         new_ball.speed_x = speed_x
         new_ball.speed_y = speed_y
 
@@ -161,6 +160,6 @@ class PowerUpSystem:
 
     def _draw_pointer(self, screen, paddle):
         end_x = paddle.rect.centerx + self.pointer_length * math.cos(self.pointer_angle)
-        end_y = paddle.rect.centery + self.pointer_length * math.sin(self.pointer_angle)
+        end_y = paddle.rect.centery - 10 + self.pointer_length * math.sin(self.pointer_angle)
 
         pygame.draw.line(screen, (255, 0, 0), paddle.rect.center, (end_x, end_y), 3)

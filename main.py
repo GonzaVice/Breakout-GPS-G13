@@ -26,6 +26,7 @@ def main():
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
+    freeze = False  # Freeze state to stop movement
 
     # Resolución interna
     render_surface = pygame.Surface((WIDTH, HEIGHT))
@@ -53,10 +54,14 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
 
+        # Check if we need to freeze the game (in shoot mode)
+        freeze = powerup_system.shoot_mode
+
         # Movimiento por frame
-        paddle.move()
-        for ball in balls:
-            ball.move()
+        if not freeze:
+            paddle.move()
+            for ball in balls:
+                ball.move()
 
         bricks_to_remove = []
 
@@ -65,7 +70,6 @@ def main():
             for brick in bricks:
                 if ball.check_collision(brick):
                     if brick.take_hit() and brick not in bricks_to_remove:
-                        # Mark the brick for removal
                         bricks_to_remove.append(brick)
                         # Create different types of particles for visual variety
                         particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 0, 0), count=15, type="circle")
@@ -77,7 +81,6 @@ def main():
                             powerup_type, powerup_image = powerup_data
                             powerup_system.spawn_powerup(brick.rect.centerx, brick.rect.centery, powerup_type, powerup_image)
 
-        # Remove bricks that have been marked for removal
         for brick in bricks_to_remove:
             bricks.remove(brick)
 

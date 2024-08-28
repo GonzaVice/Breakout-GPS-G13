@@ -27,4 +27,4 @@ POWERUP_IMAGES = {
 }
 
 AVAILABLE_POWERUPS = ['expand', 'duplicate', 'shoot']
-POWERUP_PROBABILITY = 1  # Adjust the probability as needed
+POWERUP_PROBABILITY = 0.15  # Adjust the probability as needed
