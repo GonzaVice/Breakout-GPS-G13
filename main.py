@@ -1,11 +1,12 @@
 import pygame
+import time
 from settings import WIDTH, HEIGHT, TITLE, FPS, BRICK_WIDTH, BRICK_HEIGHT, \
-    WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES
+    WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES, POWERUP_IMAGES
 from paddle import Paddle
 from ball import Ball
 from brick import Brick
 from particle import ParticleSystem
-
+from powerup import PowerUpSystem
 
 def create_bricks():
     bricks = []
@@ -13,9 +14,8 @@ def create_bricks():
         for col in range(20):
             x = col * BRICK_WIDTH
             y = row * BRICK_HEIGHT
-            images = BRICK_IMAGES  # Pass the list of images for the brick
-            hit_points = 6 - row  # Top row will have 6 hits, and bottom row will have 1 hit
-            brick = Brick(x, y, images, hit_points)
+            hit_points = 6 - row
+            brick = Brick(x, y, hit_points, brick_images=BRICK_IMAGES, powerup_images=POWERUP_IMAGES)
             bricks.append(brick)
     return bricks
 
@@ -35,12 +35,15 @@ def main():
 
     # Jugador
     paddle = Paddle(x=WIDTH//2 - 16, y=HEIGHT - 20)
+
     # Pelota
     ball = Ball(x=WIDTH//2 - 4, y=HEIGHT//2 - 4)
+
     # Ladrillos
     bricks = create_bricks()
-    # Particle System
+
     particle_system = ParticleSystem()
+    powerup_system = PowerUpSystem()
 
     # Comienza el loop
     while running:
@@ -55,10 +58,22 @@ def main():
         # Chekear colisiones por frame
         for brick in bricks[:]:
             if ball.check_collision(brick):
-                if brick.take_hit():  # Reduce hit points and check if the brick is destroyed
-                    particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 0, 0))
+                if brick.take_hit():
+                    # Create different types of particles for visual variety
+                    particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 0, 0), count=15, type="circle")
+                    particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 255, 0), count=5, type="square")
                     bricks.remove(brick)
+
+                    # Spawn power-up if applicable
+                    powerup_data = brick.maybe_drop_powerup()
+                    if powerup_data:
+                        powerup_type, powerup_image = powerup_data
+                        powerup_system.spawn_powerup(brick.rect.centerx, brick.rect.centery, powerup_type, powerup_image)
+
         ball.check_collision(paddle)
+
+        # Update power-up system
+        powerup_system.update(paddle)
 
         # Update particles
         particle_system.update()
@@ -69,6 +84,8 @@ def main():
         ball.draw(render_surface)
         for brick in bricks:
             brick.draw(render_surface)
+
+        powerup_system.draw(render_surface)
         particle_system.draw(render_surface)
 
         # Escalar al tamaño de la ventana

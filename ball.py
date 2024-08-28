@@ -3,7 +3,6 @@ from settings import WIDTH, HEIGHT
 from paddle import Paddle
 from brick import Brick
 
-
 class Ball:
     def __init__(self, x, y):
         self.image = pygame.image.load("assets/images/ball.png")
@@ -19,7 +18,7 @@ class Ball:
 
         # Rebote de izquierda a derecha
         if self.rect.left <= 0 or self.rect.right >= WIDTH:
-            if self.is_still_col_hor == False:
+            if not self.is_still_col_hor:
                 self.speed_x = -self.speed_x
                 self.is_still_col_hor = True
         else:
@@ -27,16 +26,14 @@ class Ball:
         
         # Rebote de arriba y abajo (NOTA: Hacer lógica de perder vidas más adelante)
         if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
-            if self.is_still_col_ver == False:
+            if not self.is_still_col_ver:
                 self.speed_y = -self.speed_y
                 self.is_still_col_ver = True
         else:
             self.is_still_col_ver = False
     
-    # Checkear colisión cuando la pelota choca con el paddle o los ladrillos
     def check_collision(self, obj):
         if self.rect.colliderect(obj.rect):
-
             # Si es un paddle
             if isinstance(obj, Paddle):
                 # Rebote vertical
@@ -90,8 +87,5 @@ class Ball:
             return True
         return False
 
-
-
     def draw(self, screen):
         screen.blit(self.image, self.rect)
-    
