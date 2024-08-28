@@ -69,7 +69,7 @@ def main():
     balls = [Ball(x=WIDTH//2 - 4, y=HEIGHT//2 - 4)]
 
     # Ladrillos
-    level_loader = LevelLoader("custom_level1.json")
+    level_loader = LevelLoader("level_2.json")
     level_loader.load_level()
     bricks = level_loader.get_bricks()
 

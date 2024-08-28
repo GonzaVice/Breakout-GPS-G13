@@ -11,11 +11,12 @@ class LevelEditor:
         self.grid_size = (BRICK_WIDTH, BRICK_HEIGHT)
         self.current_mode = "add"  # Start in add mode
         self.current_level = {
-            "level_name": "Custom Level",
+            "level_name": "Level 1",
             "bricks": []
         }
         self.manager = manager
-        self.level_name = "custom_level"
+        self.level_name = "level_1"
+        self.is_drawing = False
 
         # Define UI layout
         self.ui_container = pygame_gui.elements.UIPanel(relative_rect=pygame.Rect((int(WINDOW_WIDTH * 0.7), 0), (int(WINDOW_WIDTH * 0.3), WINDOW_HEIGHT)),
@@ -52,6 +53,10 @@ class LevelEditor:
         self.file_name_input.set_text(self.level_name)
 
     def add_brick(self, x, y):
+        # Remove any existing brick at the same position
+        self.remove_brick(x, y)
+        
+        # Add the new brick
         brick = {
             "x": x,
             "y": y,
@@ -61,10 +66,7 @@ class LevelEditor:
         self.current_level["bricks"].append(brick)
 
     def remove_brick(self, x, y):
-        for brick in self.current_level["bricks"]:
-            if brick["x"] == x and brick["y"] == y:
-                self.current_level["bricks"].remove(brick)
-                break
+        self.current_level["bricks"] = [brick for brick in self.current_level["bricks"] if not (brick["x"] == x and brick["y"] == y)]
 
     def save_level(self, file_name):
         self.current_level["level_name"] = file_name
@@ -114,7 +116,7 @@ def run_editor():
 
     render_surface = pygame.Surface((WIDTH, HEIGHT))
     scale_x = int(WINDOW_WIDTH * 0.7) / WIDTH  # Adjusted to take only 70% of the screen width
-    scale_y = WINDOW_HEIGHT / HEIGHT
+    scale_y = int(WINDOW_HEIGHT * 0.7) / HEIGHT
 
     running = True
     while running:
@@ -124,13 +126,23 @@ def run_editor():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                # Ensure the click is within the render area
-                if x < int(WIDTH * scale_x):
-                    # Calculate the correct position based on the scaled surface
+                if x < int(WIDTH * scale_x):  # Ensure the click is within the render area
+                    editor.is_drawing = True  # Start drawing mode
                     x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
                     y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
-
                     if event.button == 1:  # Left click to add or remove a brick
+                        if editor.current_mode == "add":
+                            editor.add_brick(x, y)
+                        elif editor.current_mode == "remove":
+                            editor.remove_brick(x, y)
+            elif event.type == pygame.MOUSEBUTTONUP:
+                editor.is_drawing = False  # Stop drawing mode
+            elif event.type == pygame.MOUSEMOTION:
+                if editor.is_drawing:
+                    x, y = event.pos
+                    if x < int(WIDTH * scale_x):  # Ensure the drag is within the render area
+                        x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
+                        y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
                         if editor.current_mode == "add":
                             editor.add_brick(x, y)
                         elif editor.current_mode == "remove":
