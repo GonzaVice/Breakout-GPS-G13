@@ -1,7 +1,7 @@
 import pygame
 import time
 from settings import WIDTH, HEIGHT, TITLE, FPS, BRICK_WIDTH, BRICK_HEIGHT, \
-    WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES, POWERUP_IMAGES
+    WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_IMAGES
 from paddle import Paddle
 from ball import Ball
 from brick import Brick
@@ -15,7 +15,7 @@ def create_bricks():
             x = col * BRICK_WIDTH
             y = row * BRICK_HEIGHT
             hit_points = 6 - row
-            brick = Brick(x, y, hit_points, brick_images=BRICK_IMAGES, powerup_images=POWERUP_IMAGES)
+            brick = Brick(x, y, hit_points, brick_images=BRICK_IMAGES)
             bricks.append(brick)
     return bricks
 

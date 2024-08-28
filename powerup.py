@@ -1,6 +1,6 @@
 import pygame
 import time
-from settings import HEIGHT, WIDTH
+from settings import HEIGHT, WIDTH, POWERUP_IMAGES, AVAILABLE_POWERUPS, POWERUP_PROBABILITY
 
 class PowerUp:
     def __init__(self, x, y, powerup_type, image):
@@ -52,7 +52,7 @@ class PowerUpSystem:
             if current_time - effect["start_time"] > self.powerup_duration:
                 if effect["type"] == "expand" or effect["type"] == "shrink":
                     effect["target"].rect.width = effect["target"].original_width
-                elif effect["type"] == "speed" or effect["type"] == "slow":
+                elif effect["type"] == "speed":
                     effect["target"].speed = 4  # Reset to original speed
                 self.active_effects.remove(effect)
 
@@ -61,8 +61,8 @@ class PowerUpSystem:
         conflicting_types = []
         if new_effect_type in ["expand", "shrink"]:
             conflicting_types = ["expand", "shrink"]
-        elif new_effect_type in ["speed", "slow"]:
-            conflicting_types = ["speed", "slow"]
+        elif new_effect_type == "speed":
+            conflicting_types = ["speed"]
 
         # Remove the conflicting effects
         self.active_effects = [
@@ -74,7 +74,7 @@ class PowerUpSystem:
         for effect_type in conflicting_types:
             if effect_type == "expand" or effect_type == "shrink":
                 paddle.rect.width = paddle.original_width
-            elif effect_type == "speed" or effect_type == "slow":
+            elif effect_type == "speed":
                 paddle.speed = 4  # Reset to original speed
 
     def draw(self, screen):

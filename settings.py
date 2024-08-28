@@ -1,3 +1,5 @@
+# settings.py
+
 WIDTH = 320
 HEIGHT = 240
 TITLE = "Breakout G13"
@@ -21,6 +23,11 @@ BRICK_IMAGES = [
 POWERUP_IMAGES = {
     'expand': "assets/images/powerups/expand.png",
     'shrink': "assets/images/powerups/shrink.png",
-    'speed': "assets/images/powerups/speed.png",
-    'slow': "assets/images/powerups/slow.png",
+    'speed': "assets/images/powerups/speed.png"
 }
+
+# List of available power-ups
+AVAILABLE_POWERUPS = ['expand', 'shrink', 'speed']
+
+# Probability of a power-up appearing (from 0 to 1)
+POWERUP_PROBABILITY = 0.2
