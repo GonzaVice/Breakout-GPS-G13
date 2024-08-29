@@ -27,19 +27,16 @@ class LevelEditor:
         display_width = int(WINDOW_WIDTH * 0.8)
         display_height = int(WINDOW_HEIGHT * 0.8)
 
-        # Sidebar container
         self.ui_container = pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect((display_width, 0), (int(WINDOW_WIDTH * 0.2), WINDOW_HEIGHT)),
             manager=self.manager
         )
 
-        # Bottom container
         self.bottom_container = pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect((0, display_height), (display_width, int(WINDOW_HEIGHT * 0.2))),
             manager=self.manager
         )
 
-        # Load and Save buttons stacked vertically in the sidebar
         self.file_name_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, 20), (150, 40)),
             text=f"File: {self.level_name}",
@@ -65,7 +62,6 @@ class LevelEditor:
         )
         self.file_name_input.set_text(self.level_name)
 
-        # Current brick preview box in the sidebar
         self.preview_rect = pygame.Rect((WINDOW_WIDTH - 100, WINDOW_HEIGHT - 100), (BRICK_WIDTH * 5, BRICK_HEIGHT * 5))
         self.preview_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, WINDOW_HEIGHT - 130), (150, 20)),
@@ -76,10 +72,9 @@ class LevelEditor:
 
         self.set_button_styles()
 
-        # Buttons centered in the bottom container
         button_width = 150
         button_height = 50
-        total_button_width = button_width * 3 + 60  # 60 is the combined padding between buttons
+        total_button_width = button_width * 3 + 60  
         starting_x = (display_width - total_button_width) // 2
         button_y = (int(WINDOW_HEIGHT * 0.2) - button_height) // 2
 
@@ -266,11 +261,9 @@ def run_editor():
         scaled_surface = pygame.transform.scale(render_surface, (int(WIDTH * scale_x), int(HEIGHT * scale_y)))
         screen.blit(scaled_surface, (0, 0))
 
-        # Update and draw the UI elements
         manager.update(time_delta)
         manager.draw_ui(screen)
 
-        # Draw the brick preview after drawing the UI elements
         editor.draw_brick_preview(screen)
 
         pygame.display.flip()

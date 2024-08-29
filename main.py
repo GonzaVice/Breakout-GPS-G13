@@ -1,9 +1,8 @@
 import pygame
 import json
-from settings import WIDTH, HEIGHT, TITLE, FPS, BRICK_WIDTH, BRICK_HEIGHT, \
+from settings import WIDTH, HEIGHT, TITLE, FPS, \
     WINDOW_WIDTH, WINDOW_HEIGHT
 from paddle import Paddle
-from ball import Ball
 from brick import Brick
 from particle import ParticleSystem
 from powerup import PowerUpSystem
@@ -93,11 +92,9 @@ def main():
                 if ball.check_collision(brick):
                     if brick.take_hit() and brick not in bricks_to_remove:
                         bricks_to_remove.append(brick)
-                        # Create different types of particles for visual variety
-                        particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 0, 0), count=15, type="circle")
+                        particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (200, 0, 0), count=15, type="circle")
                         particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 255, 0), count=5, type="square")
 
-                        # Spawn power-up if applicable
                         powerup_data = brick.maybe_drop_powerup()
                         if powerup_data:
                             powerup_type, powerup_image = powerup_data
