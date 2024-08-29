@@ -56,15 +56,17 @@ def main():
     paddle = Paddle(x=WIDTH//2 - 16, y=HEIGHT - 20)
 
     # Pelota
-    balls = [Ball(x=WIDTH//2 - 4, y=HEIGHT//2 - 4)]
+    balls = []
 
     # Ladrillos
-    level_loader = LevelLoader("level_2.json")
+    level_loader = LevelLoader("level_1.json")
     level_loader.load_level()
     bricks = level_loader.get_bricks()
 
     particle_system = ParticleSystem()
     powerup_system = PowerUpSystem()
+
+    powerup_system.shoot_mode = True
 
     # Comienza el loop
     while running:
