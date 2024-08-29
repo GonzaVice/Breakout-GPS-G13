@@ -1,0 +1,173 @@
+{
+    "level_name": "level_2",
+    "bricks": [
+        {
+            "x": 128,
+            "y": 240,
+            "hit_points": 2,
+            "has_powerup": false
+        },
+        {
+            "x": 128,
+            "y": 248,
+            "hit_points": 2,
+            "has_powerup": false
+        },
+        {
+            "x": 208,
+            "y": 248,
+            "hit_points": 3,
+            "has_powerup": false
+        },
+        {
+            "x": 128,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 72,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 64,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 64,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 56,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 48,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 112,
+            "y": 48,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 96,
+            "y": 48,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 96,
+            "y": 56,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 96,
+            "y": 64,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 96,
+            "y": 72,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 96,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 96,
+            "y": 88,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 112,
+            "y": 256,
+            "hit_points": 4,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 256,
+            "hit_points": 6,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 104,
+            "hit_points": 1,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 112,
+            "hit_points": 1,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
+            "y": 56,
+            "hit_points": 5,
+            "has_powerup": true
+        },
+        {
+            "x": 64,
+            "y": 136,
+            "hit_points": 5,
+            "has_powerup": true
+        },
+        {
+            "x": 48,
+            "y": 256,
+            "hit_points": 5,
+            "has_powerup": true
+        },
+        {
+            "x": 0,
+            "y": 0,
+            "hit_points": 5,
+            "has_powerup": true
+        },
+        {
+            "x": 304,
+            "y": 0,
+            "hit_points": 5,
+            "has_powerup": true
+        }
+    ]
+}

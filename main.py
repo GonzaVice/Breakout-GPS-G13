@@ -37,16 +37,6 @@ class LevelLoader:
     def get_bricks(self):
         return self.bricks
 
-def create_bricks():
-    bricks = []
-    for row in range(6):
-        for col in range(20):
-            x = col * BRICK_WIDTH
-            y = row * BRICK_HEIGHT
-            hit_points = 6 - row
-            brick = Brick(x, y, hit_points)
-            bricks.append(brick)
-    return bricks
 
 def main():
     # Setting inicial

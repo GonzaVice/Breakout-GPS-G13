@@ -1,6 +1,7 @@
 import pygame
 import pygame_gui
 import json
+import os
 from settings import WIDTH, HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_WIDTH, BRICK_HEIGHT, BRICK_IMAGES
 
 class LevelEditor:
@@ -9,7 +10,7 @@ class LevelEditor:
         self.selected_hit_points = 1
         self.selected_powerup = False
         self.grid_size = (BRICK_WIDTH, BRICK_HEIGHT)
-        self.current_mode = "add"  # Start in add mode
+        self.current_mode = "add"  
         self.current_level = {
             "level_name": "Level 1",
             "bricks": []
@@ -18,23 +19,27 @@ class LevelEditor:
         self.level_name = "level_1"
         self.is_drawing = False
 
-        # Define UI layout
-        display_width = int(WINDOW_WIDTH * 0.7)
-        display_height = int(WINDOW_HEIGHT * 0.7)
+        self.levels_folder = "assets/levels/"
 
-        # UI container on the right side
+        if not os.path.exists(self.levels_folder):
+            os.makedirs(self.levels_folder)
+
+
+        display_width = int(WINDOW_WIDTH * 0.8)
+        display_height = int(WINDOW_HEIGHT * 0.8)
+
         self.ui_container = pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect((display_width, 0), (int(WINDOW_WIDTH * 0.3), WINDOW_HEIGHT)),
             manager=self.manager
         )
 
-        # Bottom container below the level display
         self.bottom_container = pygame_gui.elements.UIPanel(
             relative_rect=pygame.Rect((0, display_height), (display_width , WINDOW_HEIGHT - display_height)),
             manager=self.manager
         )
+        self.set_button_styles()
 
-        # Bottom buttons with icons and colors
+
         self.mode_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((20, 10), (150, 50)),
             text=f"Mode: {self.current_mode.capitalize()}",
@@ -56,8 +61,6 @@ class LevelEditor:
             container=self.bottom_container,
             object_id="#powerup_button"
         )
-
-        self.set_button_styles()
 
         self.file_name_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((20, 20), (250, 50)),
@@ -85,18 +88,14 @@ class LevelEditor:
         self.file_name_input.set_text(self.level_name)
 
     def set_button_styles(self):
-        # Customize button appearances via themes
-        self.manager.get_theme().load_theme('./theme.json')
-        # Make sure to update the buttons with the new theme
-        self.mode_button.rebuild()
-        self.hit_points_button.rebuild()
-        self.powerup_button.rebuild()
+        try:
+            self.manager.get_theme().load_theme('./theme.json')
+        except Exception as e:
+            print(f"Error loading theme: {e}")
+
 
     def add_brick(self, x, y):
-        # Remove any existing brick at the same position
         self.remove_brick(x, y)
-
-        # Add the new brick
         brick = {
             "x": x,
             "y": y,
@@ -109,24 +108,29 @@ class LevelEditor:
         self.current_level["bricks"] = [brick for brick in self.current_level["bricks"] if not (brick["x"] == x and brick["y"] == y)]
 
     def save_level(self, file_name):
+        file_name = file_name if file_name.endswith('.json') else f"{file_name}.json"
+        file_path = os.path.join(self.levels_folder, file_name)
         self.current_level["level_name"] = file_name
-        with open(file_name + '.json', 'w') as file:
+        with open(file_path, 'w') as file:
             json.dump(self.current_level, file, indent=4)
         self.level_name = file_name
         self.file_name_label.set_text(f"File: {self.level_name}")
 
     def load_level(self, file_name):
+        file_name = file_name if file_name.endswith('.json') else f"{file_name}.json"
+        file_path = os.path.join(self.levels_folder, file_name)
         try:
-            with open(file_name + '.json', 'r') as file:
+            with open(file_path, 'r') as file:
                 level_data = json.load(file)
                 self.current_level = level_data
                 self.level_name = file_name
                 self.file_name_label.set_text(f"File: {self.level_name}")
                 self.bricks = self.current_level["bricks"]
         except FileNotFoundError:
-            print(f"Error: The file {file_name}.json was not found.")
+            print(f"Error: The file {file_name} was not found in {self.levels_folder}.")
         except json.JSONDecodeError:
-            print(f"Error: The file {file_name}.json could not be parsed.")
+            print(f"Error: The file {file_name} could not be parsed.")
+
 
     def draw(self, screen):
         for brick in self.current_level["bricks"]:
@@ -144,6 +148,7 @@ class LevelEditor:
         self.powerup_button.set_text(f"Powerup: {'On' if self.selected_powerup else 'Off'}")
 
 
+
 def run_editor():
     pygame.init()
     pygame.display.set_caption('Level Editor')
@@ -155,7 +160,7 @@ def run_editor():
     editor = LevelEditor(manager)
 
     render_surface = pygame.Surface((WIDTH, HEIGHT))
-    scale_x = int(WINDOW_WIDTH * 0.7) / WIDTH  # Adjusted to take only 70% of the screen width
+    scale_x = int(WINDOW_WIDTH * 0.7) / WIDTH 
     scale_y = int(WINDOW_HEIGHT * 0.7) / HEIGHT
 
     running = True
@@ -166,21 +171,21 @@ def run_editor():
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
-                if x < int(WIDTH * scale_x):  # Ensure the click is within the render area
-                    editor.is_drawing = True  # Start drawing mode
+                if x < int(WIDTH * scale_x): 
+                    editor.is_drawing = True  
                     x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
                     y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
-                    if event.button == 1:  # Left click to add or remove a brick
+                    if event.button == 1:  
                         if editor.current_mode == "add":
                             editor.add_brick(x, y)
                         elif editor.current_mode == "remove":
                             editor.remove_brick(x, y)
             elif event.type == pygame.MOUSEBUTTONUP:
-                editor.is_drawing = False  # Stop drawing mode
+                editor.is_drawing = False  
             elif event.type == pygame.MOUSEMOTION:
                 if editor.is_drawing:
                     x, y = event.pos
-                    if x < int(WIDTH * scale_x):  # Ensure the drag is within the render area
+                    if x < int(WIDTH * scale_x):  
                         x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
                         y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
                         if editor.current_mode == "add":
@@ -191,7 +196,7 @@ def run_editor():
                 if event.key == pygame.K_s:
                     editor.save_level(editor.file_name_input.get_text())
 
-                # Change hit points with number keys
+                
                 if event.key == pygame.K_1:
                     editor.selected_hit_points = 1
                 elif event.key == pygame.K_2:
@@ -205,11 +210,9 @@ def run_editor():
                 elif event.key == pygame.K_6:
                     editor.selected_hit_points = 6
 
-                # Toggle powerup with 'P' key
                 if event.key == pygame.K_p:
                     editor.selected_powerup = not editor.selected_powerup
 
-                # Switch between add and remove mode with 'M' key
                 if event.key == pygame.K_m:
                     editor.current_mode = "remove" if editor.current_mode == "add" else "add"
 
@@ -237,9 +240,8 @@ def run_editor():
 
         editor.draw(render_surface)
 
-        # Draw the scaled level display within the level display container
         scaled_surface = pygame.transform.scale(render_surface, (int(WIDTH * scale_x), int(HEIGHT * scale_y)))
-        screen.blit(scaled_surface, (0, 0))  # Offset to match container position
+        screen.blit(scaled_surface, (0, 0))  
 
         manager.update(time_delta)
         manager.draw_ui(screen)

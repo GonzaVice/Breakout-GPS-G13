@@ -1,0 +1,62 @@
+{
+    "button": {
+        "colours": {
+            "normal_bg": "#007BFF",
+            "hovered_bg": "#0056b3",
+            "active_bg": "#004085",
+            "normal_border": "#FFFFFF",
+            "hovered_border": "#FFFFFF",
+            "active_border": "#FFFFFF",
+            "normal_text": "#FFFFFF",
+            "hovered_text": "#FFFFFF",
+            "active_text": "#FFFFFF"
+        },
+        "fonts": {
+            "size": "24",
+            "name": "freesansbold.ttf"
+        },
+        "misc": {
+            "border_width": 2,
+            "shadow_width": 2,
+            "shape_corner_radius": 10
+        },
+        "states": {
+            "normal": {
+                "background_color": "normal_bg",
+                "border_color": "normal_border",
+                "text_color": "normal_text"
+            },
+            "hovered": {
+                "background_color": "hovered_bg",
+                "border_color": "hovered_border",
+                "text_color": "hovered_text"
+            },
+            "active": {
+                "background_color": "active_bg",
+                "border_color": "active_border",
+                "text_color": "active_text"
+            }
+        }
+    },
+    "#mode_button": {
+        "colours": {
+            "normal_bg": "#28A745",
+            "hovered_bg": "#218838",
+            "active_bg": "#1E7E34"
+        }
+    },
+    "#hit_points_button": {
+        "colours": {
+            "normal_bg": "#17A2B8",
+            "hovered_bg": "#138496",
+            "active_bg": "#117A8B"
+        }
+    },
+    "#powerup_button": {
+        "colours": {
+            "normal_bg": "#FFC107",
+            "hovered_bg": "#E0A800",
+            "active_bg": "#C69500"
+        }
+    }
+}
