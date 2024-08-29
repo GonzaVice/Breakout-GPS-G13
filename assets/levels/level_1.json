@@ -39,37 +39,7 @@
         },
         {
             "x": 144,
-            "y": 80,
-            "hit_points": 2,
-            "has_powerup": false
-        },
-        {
-            "x": 144,
             "y": 88,
-            "hit_points": 2,
-            "has_powerup": false
-        },
-        {
-            "x": 144,
-            "y": 96,
-            "hit_points": 2,
-            "has_powerup": false
-        },
-        {
-            "x": 144,
-            "y": 104,
-            "hit_points": 2,
-            "has_powerup": false
-        },
-        {
-            "x": 144,
-            "y": 112,
-            "hit_points": 2,
-            "has_powerup": false
-        },
-        {
-            "x": 128,
-            "y": 112,
             "hit_points": 2,
             "has_powerup": false
         },
@@ -188,160 +158,424 @@
             "has_powerup": false
         },
         {
-            "x": 192,
-            "y": 104,
-            "hit_points": 4,
+            "x": 256,
+            "y": 96,
+            "hit_points": 5,
             "has_powerup": false
         },
         {
-            "x": 192,
-            "y": 96,
-            "hit_points": 4,
+            "x": 256,
+            "y": 88,
+            "hit_points": 5,
             "has_powerup": false
         },
         {
-            "x": 208,
-            "y": 96,
-            "hit_points": 4,
+            "x": 256,
+            "y": 80,
+            "hit_points": 5,
             "has_powerup": false
+        },
+        {
+            "x": 160,
+            "y": 96,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 88,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 72,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 208,
             "y": 88,
-            "hit_points": 4,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 224,
-            "y": 88,
-            "hit_points": 4,
-            "has_powerup": false
+            "y": 64,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 224,
+            "y": 72,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 224,
             "y": 80,
-            "hit_points": 4,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
-            "x": 240,
+            "x": 224,
             "y": 88,
-            "hit_points": 4,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 240,
             "y": 96,
-            "hit_points": 4,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 240,
+            "y": 88,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 240,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 240,
+            "y": 72,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 224,
+            "y": 136,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 240,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 240,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 240,
             "y": 104,
-            "hit_points": 4,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
-            "x": 240,
-            "y": 112,
-            "hit_points": 4,
-            "has_powerup": false
-        },
-        {
-            "x": 224,
-            "y": 112,
-            "hit_points": 4,
-            "has_powerup": false
-        },
-        {
-            "x": 224,
-            "y": 120,
-            "hit_points": 4,
-            "has_powerup": false
+            "x": 192,
+            "y": 144,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 224,
             "y": 128,
-            "hit_points": 4,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
-            "x": 256,
+            "x": 224,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 224,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 224,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 224,
             "y": 96,
-            "hit_points": 5,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
-            "x": 256,
-            "y": 88,
-            "hit_points": 5,
-            "has_powerup": false
+            "x": 192,
+            "y": 136,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
-            "x": 256,
+            "x": 208,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
+            "y": 96,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
             "y": 80,
-            "hit_points": 5,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
-            "x": 240,
+            "x": 208,
             "y": 72,
-            "hit_points": 5,
-            "has_powerup": false
-        },
-        {
-            "x": 224,
-            "y": 72,
-            "hit_points": 5,
-            "has_powerup": false
-        },
-        {
-            "x": 224,
-            "y": 64,
-            "hit_points": 5,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 208,
             "y": 64,
-            "hit_points": 5,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 64,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 128,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 128,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 192,
             "y": 72,
-            "hit_points": 5,
-            "has_powerup": false
-        },
-        {
-            "x": 208,
-            "y": 72,
-            "hit_points": 5,
-            "has_powerup": false
-        },
-        {
-            "x": 208,
-            "y": 80,
-            "hit_points": 5,
-            "has_powerup": false
-        },
-        {
-            "x": 192,
-            "y": 80,
-            "hit_points": 5,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 176,
-            "y": 88,
-            "hit_points": 5,
-            "has_powerup": false
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
         },
         {
             "x": 176,
             "y": 96,
-            "hit_points": 5,
-            "has_powerup": false
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
+            "y": 136,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
+            "y": 128,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 208,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 96,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 192,
+            "y": 88,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 88,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 80,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 88,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 96,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 128,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 136,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 176,
+            "y": 136,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 136,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 128,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 128,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 112,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 160,
+            "y": 120,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 104,
+            "hit_points": 3,
+            "has_powerup": true
+        },
+        {
+            "x": 144,
+            "y": 96,
+            "hit_points": 3,
+            "has_powerup": true
         }
     ]
 }

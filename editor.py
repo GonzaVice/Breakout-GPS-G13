@@ -66,7 +66,7 @@ class LevelEditor:
         self.file_name_input.set_text(self.level_name)
 
         # Current brick preview box in the sidebar
-        self.preview_rect = pygame.Rect((10, WINDOW_HEIGHT - 100), (BRICK_WIDTH, BRICK_HEIGHT))
+        self.preview_rect = pygame.Rect((WINDOW_WIDTH - 100, WINDOW_HEIGHT - 100), (BRICK_WIDTH * 5, BRICK_HEIGHT * 5))
         self.preview_label = pygame_gui.elements.UILabel(
             relative_rect=pygame.Rect((10, WINDOW_HEIGHT - 130), (150, 20)),
             text="Current Brick:",
@@ -158,18 +158,19 @@ class LevelEditor:
                 powerbrick_texture = pygame.image.load("assets/images/powerups/powerbrick.png").convert_alpha()
                 screen.blit(powerbrick_texture, (brick["x"], brick["y"]))
 
-        # Draw the current brick preview in the sidebar
-        self.draw_brick_preview(screen)
 
     def draw_brick_preview(self, screen):
-        pygame.draw.rect(screen, (255, 255, 255), self.preview_rect)  # Draw the box border
+        pygame.draw.rect(screen, (255, 255, 255), self.preview_rect, 2) 
         hit_points = self.selected_hit_points
         brick_image = pygame.image.load(BRICK_IMAGES[hit_points - 1]).convert_alpha()
-        screen.blit(brick_image, self.preview_rect.topleft)
-
+        scaled_brick_image = pygame.transform.scale(brick_image, (self.preview_rect.width, self.preview_rect.height))
+        
+        screen.blit(scaled_brick_image, self.preview_rect.topleft)
+        
         if self.selected_powerup:
             powerbrick_texture = pygame.image.load("assets/images/powerups/powerbrick.png").convert_alpha()
-            screen.blit(powerbrick_texture, self.preview_rect.topleft)
+            scaled_powerbrick_texture = pygame.transform.scale(powerbrick_texture, (self.preview_rect.width, self.preview_rect.height))
+            screen.blit(scaled_powerbrick_texture, self.preview_rect.topleft)
 
     def update_ui(self):
         self.mode_button.set_text(f"Mode: {self.current_mode.capitalize()}")
@@ -265,8 +266,12 @@ def run_editor():
         scaled_surface = pygame.transform.scale(render_surface, (int(WIDTH * scale_x), int(HEIGHT * scale_y)))
         screen.blit(scaled_surface, (0, 0))
 
+        # Update and draw the UI elements
         manager.update(time_delta)
         manager.draw_ui(screen)
+
+        # Draw the brick preview after drawing the UI elements
+        editor.draw_brick_preview(screen)
 
         pygame.display.flip()
 
