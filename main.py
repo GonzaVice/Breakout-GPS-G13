@@ -10,7 +10,7 @@ from powerup import PowerUpSystem
 
 class LevelLoader:
     def __init__(self, filename):
-        self.filename = filename
+        self.filename = "assets/levels/" + filename
         self.bricks = []
 
     def load_level(self):
@@ -45,7 +45,7 @@ def main():
     pygame.display.set_caption(TITLE)
     clock = pygame.time.Clock()
     running = True
-    freeze = False 
+    freeze = False
 
     # Resolución interna
     render_surface = pygame.Surface((WIDTH, HEIGHT))
