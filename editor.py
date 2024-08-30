@@ -6,6 +6,7 @@ from settings import WIDTH, HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_WIDTH, BR
 
 class LevelEditor:
     def __init__(self, manager):
+        # Initialization code remains the same
         self.bricks = []
         self.selected_hit_points = 1
         self.selected_powerup = False
@@ -171,6 +172,62 @@ class LevelEditor:
         self.hit_points_button.set_text(f"HP: {self.selected_hit_points}")
         self.powerup_button.set_text(f"Powerup: {'On' if self.selected_powerup else 'Off'}")
 
+    def process_brick_placement(self, x, y, scale_x, scale_y):
+        if x < int(WIDTH * scale_x):
+            x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
+            y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
+            if self.current_mode == "add":
+                self.add_brick(x, y)
+            elif self.current_mode == "remove":
+                self.remove_brick(x, y)
+
+    def handle_mouse_button_down(self, event, scale_x, scale_y):
+        self.is_drawing = True
+        self.process_brick_placement(event.pos[0], event.pos[1], scale_x, scale_y)
+
+    def handle_mouse_button_up(self, event):
+        self.is_drawing = False
+
+    def handle_mouse_motion(self, event, scale_x, scale_y):
+        if self.is_drawing:
+            self.process_brick_placement(event.pos[0], event.pos[1], scale_x, scale_y)
+
+    def handle_key_down(self, event):
+        if event.key == pygame.K_s:
+            self.save_level(self.file_name_input.get_text())
+        elif event.key == pygame.K_1:
+            self.selected_hit_points = 1
+        elif event.key == pygame.K_2:
+            self.selected_hit_points = 2
+        elif event.key == pygame.K_3:
+            self.selected_hit_points = 3
+        elif event.key == pygame.K_4:
+            self.selected_hit_points = 4
+        elif event.key == pygame.K_5:
+            self.selected_hit_points = 5
+        elif event.key == pygame.K_6:
+            self.selected_hit_points = 6
+        elif event.key == pygame.K_p:
+            self.selected_powerup = not self.selected_powerup
+        elif event.key == pygame.K_m:
+            self.current_mode = "remove" if self.current_mode == "add" else "add"
+        self.update_ui()
+
+    def handle_ui_button_pressed(self, event):
+        if event.ui_element == self.save_button:
+            self.save_level(self.file_name_input.get_text())
+        elif event.ui_element == self.load_button:
+            self.load_level(self.file_name_input.get_text())
+        elif event.ui_element == self.mode_button:
+            self.current_mode = "remove" if self.current_mode == "add" else "add"
+            self.update_ui()
+        elif event.ui_element == self.hit_points_button:
+            self.selected_hit_points = (self.selected_hit_points % 6) + 1
+            self.update_ui()
+        elif event.ui_element == self.powerup_button:
+            self.selected_powerup = not self.selected_powerup
+            self.update_ui()
+
 def run_editor():
     pygame.init()
     pygame.display.set_caption('Level Editor')
@@ -192,63 +249,15 @@ def run_editor():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if x < int(WIDTH * scale_x):
-                    editor.is_drawing = True
-                    x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
-                    y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
-                    if event.button == 1:
-                        if editor.current_mode == "add":
-                            editor.add_brick(x, y)
-                        elif editor.current_mode == "remove":
-                            editor.remove_brick(x, y)
+                editor.handle_mouse_button_down(event, scale_x, scale_y)
             elif event.type == pygame.MOUSEBUTTONUP:
-                editor.is_drawing = False
+                editor.handle_mouse_button_up(event)
             elif event.type == pygame.MOUSEMOTION:
-                if editor.is_drawing:
-                    x, y = event.pos
-                    if x < int(WIDTH * scale_x):
-                        x = int(x / scale_x) // BRICK_WIDTH * BRICK_WIDTH
-                        y = int(y / scale_y) // BRICK_HEIGHT * BRICK_HEIGHT
-                        if editor.current_mode == "add":
-                            editor.add_brick(x, y)
-                        elif editor.current_mode == "remove":
-                            editor.remove_brick(x, y)
+                editor.handle_mouse_motion(event, scale_x, scale_y)
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s:
-                    editor.save_level(editor.file_name_input.get_text())
-                if event.key == pygame.K_1:
-                    editor.selected_hit_points = 1
-                elif event.key == pygame.K_2:
-                    editor.selected_hit_points = 2
-                elif event.key == pygame.K_3:
-                    editor.selected_hit_points = 3
-                elif event.key == pygame.K_4:
-                    editor.selected_hit_points = 4
-                elif event.key == pygame.K_5:
-                    editor.selected_hit_points = 5
-                elif event.key == pygame.K_6:
-                    editor.selected_hit_points = 6
-                if event.key == pygame.K_p:
-                    editor.selected_powerup = not editor.selected_powerup
-                if event.key == pygame.K_m:
-                    editor.current_mode = "remove" if editor.current_mode == "add" else "add"
-                editor.update_ui()
-
-            if event.type == pygame_gui.UI_BUTTON_PRESSED:
-                if event.ui_element == editor.save_button:
-                    editor.save_level(editor.file_name_input.get_text())
-                elif event.ui_element == editor.load_button:
-                    editor.load_level(editor.file_name_input.get_text())
-                elif event.ui_element == editor.mode_button:
-                    editor.current_mode = "remove" if editor.current_mode == "add" else "add"
-                    editor.update_ui()
-                elif event.ui_element == editor.hit_points_button:
-                    editor.selected_hit_points = (editor.selected_hit_points % 6) + 1
-                    editor.update_ui()
-                elif event.ui_element == editor.powerup_button:
-                    editor.selected_powerup = not editor.selected_powerup
-                    editor.update_ui()
+                editor.handle_key_down(event)
+            elif event.type == pygame_gui.UI_BUTTON_PRESSED:
+                editor.handle_ui_button_pressed(event)
 
             manager.process_events(event)
 
