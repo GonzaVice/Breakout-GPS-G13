@@ -58,7 +58,7 @@ def main():
     balls = []
 
     # Ladrillos
-    level_loader = LevelLoader("level_2.json")
+    level_loader = LevelLoader("level_1.json")
     level_loader.load_level()
     bricks = level_loader.get_bricks()
 
