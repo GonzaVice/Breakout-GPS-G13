@@ -58,5 +58,15 @@
             "hovered_bg": "#E0A800",
             "active_bg": "#C69500"
         }
+    },
+    "#file_name_label": {
+        "colours": {
+            "normal_text": "#FFD700"
+        }
+    },
+    "#preview_label": {
+        "colours": {
+            "normal_text": "#FFD700"
+        }
     }
 }

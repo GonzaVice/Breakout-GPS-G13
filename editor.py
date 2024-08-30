@@ -1,16 +1,23 @@
 import pygame
 import pygame_gui
-import json
-import os
+from utils import ensure_directory_exists, LevelLoader
 from settings import WIDTH, HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, BRICK_WIDTH, BRICK_HEIGHT, BRICK_IMAGES
+
+# Define constants for layout and sizing
+UI_PANEL_WIDTH_RATIO = 0.2
+EDITOR_AREA_WIDTH_RATIO = 0.8
+EDITOR_AREA_HEIGHT_RATIO = 0.8
+
+BUTTON_WIDTH = 150
+BUTTON_HEIGHT = 50
+PREVIEW_RECT_SIZE_RATIO = 0.1
+MARGIN = 10
 
 class LevelEditor:
     def __init__(self, manager):
-        # Initialization code remains the same
         self.bricks = []
         self.selected_hit_points = 1
         self.selected_powerup = False
-        self.grid_size = (BRICK_WIDTH, BRICK_HEIGHT)
         self.current_mode = "add"
         self.current_level = {
             "level_name": "Level 1",
@@ -21,51 +28,78 @@ class LevelEditor:
         self.is_drawing = False
 
         self.levels_folder = "assets/levels/"
+        ensure_directory_exists(self.levels_folder)
 
-        if not os.path.exists(self.levels_folder):
-            os.makedirs(self.levels_folder)
+        self.level_loader = LevelLoader()
 
-        display_width = int(WINDOW_WIDTH * 0.8)
-        display_height = int(WINDOW_HEIGHT * 0.8)
+        display_width = int(WINDOW_WIDTH * EDITOR_AREA_WIDTH_RATIO)
+        display_height = int(WINDOW_HEIGHT * EDITOR_AREA_HEIGHT_RATIO)
+        sidebar_width = int(WINDOW_WIDTH * UI_PANEL_WIDTH_RATIO)
 
         self.ui_container = pygame_gui.elements.UIPanel(
-            relative_rect=pygame.Rect((display_width, 0), (int(WINDOW_WIDTH * 0.2), WINDOW_HEIGHT)),
+            relative_rect=pygame.Rect((display_width, 0), 
+                                      (sidebar_width, WINDOW_HEIGHT)),
             manager=self.manager
         )
 
         self.bottom_container = pygame_gui.elements.UIPanel(
-            relative_rect=pygame.Rect((0, display_height), (display_width, int(WINDOW_HEIGHT * 0.2))),
+            relative_rect=pygame.Rect((0, display_height), 
+                                      (display_width, int(WINDOW_HEIGHT * (1 - EDITOR_AREA_HEIGHT_RATIO)))),
             manager=self.manager
         )
 
         self.file_name_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, 20), (150, 40)),
+            relative_rect=pygame.Rect((MARGIN, MARGIN), 
+                                      (BUTTON_WIDTH, 40)),
             text=f"File: {self.level_name}",
             manager=self.manager,
-            container=self.ui_container
+            container=self.ui_container,
+            object_id="#file_name_label"
         )
+        
+        button_x = (sidebar_width - BUTTON_WIDTH) // 2  # Center the buttons horizontally
+        
         self.load_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((10, 70), (150, 50)),
+            relative_rect=pygame.Rect((button_x, 70), 
+                                      (BUTTON_WIDTH, BUTTON_HEIGHT)),
             text='Load Level',
             manager=self.manager,
             container=self.ui_container
         )
         self.save_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((10, 130), (150, 50)),
+            relative_rect=pygame.Rect((button_x, 130), 
+                                      (BUTTON_WIDTH, BUTTON_HEIGHT)),
             text='Save Level',
             manager=self.manager,
             container=self.ui_container
         )
         self.file_name_input = pygame_gui.elements.UITextEntryLine(
-            relative_rect=pygame.Rect((10, 190), (150, 50)),
+            relative_rect=pygame.Rect((button_x, 190), 
+                                      (BUTTON_WIDTH, 40)),
             manager=self.manager,
             container=self.ui_container
         )
         self.file_name_input.set_text(self.level_name)
 
-        self.preview_rect = pygame.Rect((WINDOW_WIDTH - 100, WINDOW_HEIGHT - 100), (BRICK_WIDTH * 5, BRICK_HEIGHT * 5))
+        # Calculate the preview rectangle size while maintaining the original aspect ratio
+        preview_scale_factor = min(WINDOW_WIDTH, WINDOW_HEIGHT) * PREVIEW_RECT_SIZE_RATIO
+        brick_aspect_ratio = BRICK_WIDTH / BRICK_HEIGHT
+
+        if brick_aspect_ratio > 1:
+            preview_width = int(preview_scale_factor)
+            preview_height = int(preview_scale_factor / brick_aspect_ratio)
+        else:
+            preview_height = int(preview_scale_factor)
+            preview_width = int(preview_scale_factor * brick_aspect_ratio)
+
+        # Position the preview rectangle in the bottom-right corner, with margin
+        self.preview_rect = pygame.Rect(
+            (WINDOW_WIDTH - preview_width - MARGIN, WINDOW_HEIGHT - preview_height - MARGIN),
+            (preview_width, preview_height)
+        )
         self.preview_label = pygame_gui.elements.UILabel(
-            relative_rect=pygame.Rect((10, WINDOW_HEIGHT - 130), (150, 20)),
+            relative_rect=pygame.Rect((MARGIN, WINDOW_HEIGHT - preview_height - 30), 
+                                      (BUTTON_WIDTH, 20)),
             text="Current Brick:",
             manager=self.manager,
             container=self.ui_container
@@ -73,28 +107,29 @@ class LevelEditor:
 
         self.set_button_styles()
 
-        button_width = 150
-        button_height = 50
-        total_button_width = button_width * 3 + 60  
+        total_button_width = BUTTON_WIDTH * 3 + MARGIN * 4  
         starting_x = (display_width - total_button_width) // 2
-        button_y = (int(WINDOW_HEIGHT * 0.2) - button_height) // 2
+        button_y = (int(WINDOW_HEIGHT * (1 - EDITOR_AREA_HEIGHT_RATIO)) - BUTTON_HEIGHT) // 2
 
         self.mode_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((starting_x, button_y), (button_width, button_height)),
+            relative_rect=pygame.Rect((starting_x, button_y), 
+                                      (BUTTON_WIDTH, BUTTON_HEIGHT)),
             text=f"Mode: {self.current_mode.capitalize()}",
             manager=self.manager,
             container=self.bottom_container,
             object_id="#mode_button"
         )
         self.hit_points_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((starting_x + button_width + 30, button_y), (button_width, button_height)),
+            relative_rect=pygame.Rect((starting_x + BUTTON_WIDTH + MARGIN, button_y), 
+                                      (BUTTON_WIDTH, BUTTON_HEIGHT)),
             text=f"HP: {self.selected_hit_points}",
             manager=self.manager,
             container=self.bottom_container,
             object_id="#hit_points_button"
         )
         self.powerup_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((starting_x + (button_width + 30) * 2, button_y), (button_width, button_height)),
+            relative_rect=pygame.Rect((starting_x + (BUTTON_WIDTH + MARGIN) * 2, button_y), 
+                                      (BUTTON_WIDTH, BUTTON_HEIGHT)),
             text=f"Powerup: {'On' if self.selected_powerup else 'Off'}",
             manager=self.manager,
             container=self.bottom_container,
@@ -121,28 +156,17 @@ class LevelEditor:
         self.current_level["bricks"] = [brick for brick in self.current_level["bricks"] if not (brick["x"] == x and brick["y"] == y)]
 
     def save_level(self, file_name):
-        file_name = file_name if file_name.endswith('.json') else f"{file_name}.json"
-        file_path = os.path.join(self.levels_folder, file_name)
-        self.current_level["level_name"] = file_name
-        with open(file_path, 'w') as file:
-            json.dump(self.current_level, file, indent=4)
-        self.level_name = file_name
+        self.level_name = self.level_loader.save_level(self.current_level, file_name)
         self.file_name_label.set_text(f"File: {self.level_name}")
 
     def load_level(self, file_name):
-        file_name = file_name if file_name.endswith('.json') else f"{file_name}.json"
-        file_path = os.path.join(self.levels_folder, file_name)
-        try:
-            with open(file_path, 'r') as file:
-                level_data = json.load(file)
-                self.current_level = level_data
-                self.level_name = file_name
-                self.file_name_label.set_text(f"File: {self.level_name}")
-                self.bricks = self.current_level["bricks"]
-        except FileNotFoundError:
-            print(f"Error: The file {file_name} was not found in {self.levels_folder}.")
-        except json.JSONDecodeError:
-            print(f"Error: The file {file_name} could not be parsed.")
+        self.level_loader.filename = "assets/levels/" + file_name + ".json"
+        level_data = self.level_loader.load_level()  
+        if level_data:
+            self.current_level = level_data
+            self.level_name = file_name
+            self.file_name_label.set_text(f"File: {self.level_name}")
+            self.bricks = self.current_level["bricks"]
 
     def draw(self, screen):
         for brick in self.current_level["bricks"]:
@@ -239,8 +263,8 @@ def run_editor():
     editor = LevelEditor(manager)
 
     render_surface = pygame.Surface((WIDTH, HEIGHT))
-    scale_x = int(WINDOW_WIDTH * 0.8) / WIDTH
-    scale_y = int(WINDOW_HEIGHT * 0.8) / HEIGHT
+    scale_x = int(WINDOW_WIDTH * EDITOR_AREA_WIDTH_RATIO) / WIDTH
+    scale_y = int(WINDOW_HEIGHT * EDITOR_AREA_HEIGHT_RATIO) / HEIGHT
 
     running = True
     while running:
