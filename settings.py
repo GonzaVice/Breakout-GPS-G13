@@ -8,8 +8,8 @@ FPS = 60
 BRICK_WIDTH = 16
 BRICK_HEIGHT = 8
 
-WINDOW_WIDTH = 960
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 960 * 1.2
+WINDOW_HEIGHT = 720 * 1.2
 
 BRICK_IMAGES = [
     "assets/images/bricks/brick1.png",

@@ -153,7 +153,6 @@ class LevelEditor:
                 powerbrick_texture = pygame.image.load("assets/images/powerups/powerbrick.png").convert_alpha()
                 screen.blit(powerbrick_texture, (brick["x"], brick["y"]))
 
-
     def draw_brick_preview(self, screen):
         pygame.draw.rect(screen, (255, 255, 255), self.preview_rect, 2) 
         hit_points = self.selected_hit_points
