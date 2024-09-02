@@ -11,10 +11,11 @@ class Ball:
         self.speed_y = -2
         self.is_still_col_hor = False
         self.is_still_col_ver = False
-    
-    def move(self):
+
+    def move(self, paddle, balls, lives, spawn_new_ball):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
+        running = True
 
         # Rebote de izquierda a derecha
         if self.rect.left <= 0 or self.rect.right >= WIDTH:
@@ -23,15 +24,26 @@ class Ball:
                 self.is_still_col_hor = True
         else:
             self.is_still_col_hor = False
-        
-        # Rebote de arriba y abajo (NOTA: Hacer lógica de perder vidas más adelante)
-        if self.rect.top <= 0 or self.rect.bottom >= HEIGHT:
+
+        # Rebote de arriba y abajo
+        if self.rect.top <= 0:
             if not self.is_still_col_ver:
                 self.speed_y = -self.speed_y
                 self.is_still_col_ver = True
+        elif self.rect.bottom >= HEIGHT:
+            if len(balls) == 1:  # revisar si es que es la ultima pelota
+                lives -= 1
+                if lives > 0:
+                    spawn_new_ball = True
+                else:
+                    running = False
+            balls.remove(self)  # sacar la pelota
         else:
             self.is_still_col_ver = False
-    
+
+        return lives, spawn_new_ball, running
+
+
     def check_collision(self, obj):
         if self.rect.colliderect(obj.rect):
             # Si es un paddle
