@@ -40,3 +40,13 @@ pip install -r requirements.txt
 ```
 python3 main.py
 ```
+
+
+### Editor de niveles:
+
+Breakout incluye un editor de niveles creado utilizando pygame_gui.
+Para utilizarlo se debe ejecutar el archivo editor.py:
+
+```
+python3 editor.py
+```

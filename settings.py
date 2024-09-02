@@ -1,3 +1,5 @@
+# settings.py
+
 WIDTH = 320
 HEIGHT = 240
 TITLE = "Breakout G13"
@@ -6,8 +8,8 @@ FPS = 60
 BRICK_WIDTH = 16
 BRICK_HEIGHT = 8
 
-WINDOW_WIDTH = 960
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = 960 * 1.2
+WINDOW_HEIGHT = 720 * 1.2
 
 BRICK_IMAGES = [
     "assets/images/bricks/brick1.png",
@@ -17,3 +19,12 @@ BRICK_IMAGES = [
     "assets/images/bricks/brick5.png",
     "assets/images/bricks/brick6.png"
 ]
+
+POWERUP_IMAGES = {
+    'expand': "assets/images/powerups/expand.png",
+    'duplicate': "assets/images/powerups/duplicate.png",
+    'shoot': "assets/images/powerups/shoot.png"
+}
+
+AVAILABLE_POWERUPS = ['expand', 'duplicate', 'shoot']
+POWERUP_PROBABILITY = 0.0  # Adjust the probability as needed
