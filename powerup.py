@@ -2,7 +2,7 @@ import pygame
 import time
 import math
 from ball import Ball
-from settings import HEIGHT, WIDTH, POWERUP_IMAGES
+from settings import HEIGHT, WIDTH, POWERUP_IMAGES, BALL_SPEED
 
 class PowerUp:
     def __init__(self, x, y, powerup_type, image):
@@ -97,9 +97,8 @@ class PowerUpSystem:
                 self.shoot_mode = False 
 
     def _shoot_new_ball(self, paddle, balls):
-        speed = 5
-        speed_x = speed * math.cos(self.pointer_angle)
-        speed_y = speed * math.sin(self.pointer_angle)
+        speed_x = BALL_SPEED * math.cos(self.pointer_angle)
+        speed_y = BALL_SPEED * math.sin(self.pointer_angle)
 
         new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 10)
         new_ball.speed_x = speed_x
