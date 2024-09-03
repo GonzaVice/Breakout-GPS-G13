@@ -78,7 +78,7 @@ class Ball:
                 hit_ratio = (hit_pos / obj.rect.width) - 0.5  # Ratio from -0.5 to 0.5
 
                 # Adjust angle based on hit position
-                self.angle = math.radians(90) - (hit_ratio * math.radians(70))
+                self.angle = math.radians(90) - (hit_ratio * math.radians(80))
                 self.update_speed_components()
                 print("Collision: Paddle")
                 self.log_speed("After collision with Paddle")
