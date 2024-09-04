@@ -17,7 +17,8 @@ BRICK_IMAGES = [
     "assets/images/bricks/brick3.png",
     "assets/images/bricks/brick4.png",
     "assets/images/bricks/brick5.png",
-    "assets/images/bricks/brick6.png"
+    "assets/images/bricks/brick6.png",
+    "assets/images/bricks/brick7.png"
 ]
 
 POWERUP_IMAGES = {

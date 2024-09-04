@@ -9,7 +9,7 @@ class PowerUp:
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect(center=(x, y))
         self.powerup_type = powerup_type
-        self.speed = 2
+        self.speed = 1
 
     def move(self):
         self.rect.y += self.speed
@@ -21,7 +21,7 @@ class PowerUp:
         return self.powerup_type
 
 class PowerUpSystem:
-    def __init__(self, powerup_duration=5):
+    def __init__(self, powerup_duration=8):
         self.active_powerups = []
         self.active_effects = []
         self.powerup_duration = powerup_duration
