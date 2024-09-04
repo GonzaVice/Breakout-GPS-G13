@@ -59,7 +59,7 @@ class Ball:
                 paddle_section = obj.rect.width // 7  # Divide el paddle en 7 secciones
 
                 if hit_pos < paddle_section:
-                    self.speed_x = -3 # Más hacia la izquierda
+                    self.speed_x = -2.5 # Más hacia la izquierda
                     self.speed_y = -2
                 elif hit_pos < 2 * paddle_section:
                     self.speed_x = -2 # Hacia la izquierda
@@ -77,7 +77,7 @@ class Ball:
                     self.speed_x = 2 # Hacia la derecha
                     self.speed_y = -2.5
                 else:
-                    self.speed_x = 3 # Más hacia la derecha
+                    self.speed_x = 2.5 # Más hacia la derecha
                     self.speed_y = -2
 
             # Si es un ladrillo (Lógica con bugs, necesita arreglarse)

@@ -35,11 +35,11 @@ def show_menu():
 
         # Create level buttons in two rows of five
         level_buttons = []
-        for i in range(5):
+        for i in range(10):
             row = i // 5
             col = i % 5
             x = (WINDOW_WIDTH // 2 - 300) + col * 150
-            y = 250 + row * 100
+            y = 250 + row * 120
             level_buttons.append(Button(
                 image=pygame.image.load('assets/images/level_button.png'),
                 pos=(x, y),
@@ -52,7 +52,7 @@ def show_menu():
         # Quit button
         quit_button = Button(
             image=pygame.image.load('assets/images/quit_button.png'),
-            pos=(WINDOW_WIDTH // 2, 450),
+            pos=(WINDOW_WIDTH // 2, 500),
             text_input="QUIT",
             font=get_font(30),
             base_color=(255, 255, 255),
