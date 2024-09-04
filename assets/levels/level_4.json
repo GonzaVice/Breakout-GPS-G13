@@ -1,0 +1,48 @@
+{
+  "level_name": "level_4.json",
+  "bricks": [
+
+    {"x": 64, "y": 24, "hit_points": 1, "has_powerup": true},
+    {"x": 80, "y": 24, "hit_points": 2, "has_powerup": false},
+    {"x": 96, "y": 24, "hit_points": 3, "has_powerup": false},
+    {"x": 160, "y": 24, "hit_points": 4, "has_powerup": false},
+    {"x": 224, "y": 24, "hit_points": 5, "has_powerup": false},
+    {"x": 240, "y": 24, "hit_points": 6, "has_powerup": false},
+
+    {"x": 48, "y": 32, "hit_points": 6, "has_powerup": false},
+    {"x": 144, "y": 32, "hit_points": 2, "has_powerup": true},
+    {"x": 160, "y": 32, "hit_points": 3, "has_powerup": false},
+    {"x": 208, "y": 32, "hit_points": 4, "has_powerup": false},
+    {"x": 256, "y": 32, "hit_points": 5, "has_powerup": false},
+
+    {"x": 48, "y": 40, "hit_points": 1, "has_powerup": true},
+    {"x": 160, "y": 40, "hit_points": 3, "has_powerup": false},
+    {"x": 256, "y": 40, "hit_points": 5, "has_powerup": false},
+
+    {"x": 48, "y": 48, "hit_points": 6, "has_powerup": false},
+    {"x": 160, "y": 48, "hit_points": 5, "has_powerup": false},
+    {"x": 224, "y": 48, "hit_points": 4, "has_powerup": false},
+    {"x": 240, "y": 48, "hit_points": 3, "has_powerup": false},
+
+    {"x": 48, "y": 56, "hit_points": 4, "has_powerup": false},
+    {"x": 80, "y": 56, "hit_points": 5, "has_powerup": false},
+    {"x": 96, "y": 56, "hit_points": 3, "has_powerup": false},
+    {"x": 160, "y": 56, "hit_points": 2, "has_powerup": false},
+    {"x": 256, "y": 56, "hit_points": 1, "has_powerup": true},
+
+    {"x": 48, "y": 64, "hit_points": 1, "has_powerup": false},
+    {"x": 96, "y": 64, "hit_points": 2, "has_powerup": true},
+    {"x": 160, "y": 64, "hit_points": 3, "has_powerup": false},
+    {"x": 208, "y": 64, "hit_points": 4, "has_powerup": false},
+    {"x": 256, "y": 64, "hit_points": 5, "has_powerup": false},
+
+    {"x": 64, "y": 72, "hit_points": 1, "has_powerup": true},
+    {"x": 80, "y": 72, "hit_points": 2, "has_powerup": false},
+    {"x": 96, "y": 72, "hit_points": 3, "has_powerup": true},
+    {"x": 144, "y": 72, "hit_points": 4, "has_powerup": false},
+    {"x": 160, "y": 72, "hit_points": 5, "has_powerup": false},
+    {"x": 176, "y": 72, "hit_points": 6, "has_powerup": false},
+    {"x": 224, "y": 72, "hit_points": 1, "has_powerup": true},
+    {"x": 240, "y": 72, "hit_points": 2, "has_powerup": false}
+  ]
+}

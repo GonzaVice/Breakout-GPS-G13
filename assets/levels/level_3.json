@@ -1,5 +1,5 @@
 {
-    "level_name": "level_2.json",
+    "level_name": "level_3.json",
     "bricks": [
 
       {"x": 144, "y": 24, "hit_points": 6, "has_powerup": false},
