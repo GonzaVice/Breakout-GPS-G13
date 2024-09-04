@@ -56,20 +56,26 @@ class Ball:
 
                 # Cambiar dirección horizontal basada en la posición de la colisión
                 hit_pos = self.rect.centerx - obj.rect.left
-                paddle_section = obj.rect.width // 5  # Divide el paddle en 5 secciones
+                paddle_section = obj.rect.width // 7  # Divide el paddle en 7 secciones
 
                 if hit_pos < paddle_section:
                     self.speed_x = -3 # Más hacia la izquierda
                     self.speed_y = -2
                 elif hit_pos < 2 * paddle_section:
-                    self.speed_x = -2 # Levemente hacia la izquierda
-                    self.speed_y = -3
+                    self.speed_x = -2 # Hacia la izquierda
+                    self.speed_y = -2.5
                 elif hit_pos < 3 * paddle_section:
+                    self.speed_x = -1.5 # Levemente hacia la izquierda
+                    self.speed_y = -3
+                elif hit_pos < 4 * paddle_section:
                     self.speed_x = 0  # Rebote central, sin cambio horizontal
                     self.speed_y = -4
-                elif hit_pos < 4 * paddle_section:
-                    self.speed_x = 2 # Levemente hacia la derecha
+                elif hit_pos < 5 * paddle_section:
+                    self.speed_x = 1.5 # Levemente hacia la izquierda
                     self.speed_y = -3
+                elif hit_pos < 6 * paddle_section:
+                    self.speed_x = 2 # Hacia la derecha
+                    self.speed_y = -2.5
                 else:
                     self.speed_x = 3 # Más hacia la derecha
                     self.speed_y = -2

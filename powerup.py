@@ -9,7 +9,7 @@ class PowerUp:
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect(center=(x, y))
         self.powerup_type = powerup_type
-        self.speed = 2
+        self.speed = 1
 
     def move(self):
         self.rect.y += self.speed
@@ -21,7 +21,7 @@ class PowerUp:
         return self.powerup_type
 
 class PowerUpSystem:
-    def __init__(self, powerup_duration=5):
+    def __init__(self, powerup_duration=8):
         self.active_powerups = []
         self.active_effects = []
         self.powerup_duration = powerup_duration
@@ -97,7 +97,7 @@ class PowerUpSystem:
                 self.shoot_mode = False 
 
     def _shoot_new_ball(self, paddle, balls):
-        speed = 5
+        speed = 3
         speed_x = speed * math.cos(self.pointer_angle)
         speed_y = speed * math.sin(self.pointer_angle)
 
