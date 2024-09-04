@@ -57,3 +57,13 @@ def ensure_directory_exists(directory):
         os.makedirs(directory)
 
 
+def get_font(size):
+    return pygame.font.Font("assets/font.ttf", size)
+
+
+def draw_lives(screen, lives, filled_heart):
+    for i in range(3):
+        x_position = screen.get_width() - (20 + 10) * (i + 1)  # Start from the right and move left
+        y_position = 10  # Keep the y position fixed at the top
+        if i < lives:
+            screen.blit(filled_heart, (x_position, y_position))

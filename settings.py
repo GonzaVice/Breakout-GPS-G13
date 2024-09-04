@@ -29,3 +29,5 @@ POWERUP_IMAGES = {
 
 AVAILABLE_POWERUPS = ['expand', 'duplicate', 'shoot']
 POWERUP_PROBABILITY = 0.0  # Adjust the probability as needed
+
+BALL_SPEED = 4

@@ -53,8 +53,7 @@ class LevelEditor:
                                       (BUTTON_WIDTH, 40)),
             text=f"File: {self.level_name}",
             manager=self.manager,
-            container=self.ui_container,
-            object_id="#file_name_label"
+            container=self.ui_container
         )
         
         button_x = (sidebar_width - BUTTON_WIDTH) // 2  # Center the buttons horizontally
@@ -102,10 +101,8 @@ class LevelEditor:
                                       (BUTTON_WIDTH, 20)),
             text="Current Brick:",
             manager=self.manager,
-            container=self.ui_container
+            container=self.ui_container,
         )
-
-        self.set_button_styles()
 
         total_button_width = BUTTON_WIDTH * 3 + MARGIN * 4  
         starting_x = (display_width - total_button_width) // 2
@@ -117,7 +114,6 @@ class LevelEditor:
             text=f"Mode: {self.current_mode.capitalize()}",
             manager=self.manager,
             container=self.bottom_container,
-            object_id="#mode_button"
         )
         self.hit_points_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((starting_x + BUTTON_WIDTH + MARGIN, button_y), 
@@ -125,7 +121,6 @@ class LevelEditor:
             text=f"HP: {self.selected_hit_points}",
             manager=self.manager,
             container=self.bottom_container,
-            object_id="#hit_points_button"
         )
         self.powerup_button = pygame_gui.elements.UIButton(
             relative_rect=pygame.Rect((starting_x + (BUTTON_WIDTH + MARGIN) * 2, button_y), 
@@ -133,14 +128,8 @@ class LevelEditor:
             text=f"Powerup: {'On' if self.selected_powerup else 'Off'}",
             manager=self.manager,
             container=self.bottom_container,
-            object_id="#powerup_button"
         )
 
-    def set_button_styles(self):
-        try:
-            self.manager.get_theme().load_theme('./theme.json')
-        except Exception as e:
-            print(f"Error loading theme: {e}")
 
     def add_brick(self, x, y):
         self.remove_brick(x, y)

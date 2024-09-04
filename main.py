@@ -1,27 +1,20 @@
 import pygame
-from settings import WIDTH, HEIGHT, TITLE, FPS, \
-    WINDOW_WIDTH, WINDOW_HEIGHT
+from settings import WIDTH, HEIGHT, TITLE, FPS, WINDOW_WIDTH, WINDOW_HEIGHT
 from paddle import Paddle
 from particle import ParticleSystem
 from powerup import PowerUpSystem
-from utils import LevelLoader
+from utils import LevelLoader, get_font, draw_lives
 from button import Button
 from ball import Ball
 
-def get_font(size):
-    return pygame.font.Font("assets/font.ttf", size)
 
-def draw_lives(screen, lives, filled_heart):
-    for i in range(3):
-        x_position = screen.get_width() - (20 + 10) * (i + 1)  # Start from the right and move left
-        y_position = 10  # Keep the y position fixed at the top
-        if i < lives:
-            screen.blit(filled_heart, (x_position, y_position))
+def load_and_scale_background(image_path, window_width, window_height):
+    bg = pygame.image.load(image_path)
+    return pygame.transform.scale(bg, (window_width, window_height))
 
-def show_menu():
+
+def show_menu(screen, bg):
     menu_running = True
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    bg = pygame.image.load('assets/images/background.png')
 
     while menu_running:
         screen.blit(bg, (0, 0))
@@ -73,26 +66,25 @@ def show_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
-                menu_running = False
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for i, button in enumerate(level_buttons):
                     if button.checkForInput(mouse_pos):
                         level = f"level_{i+1}.json"
                         return level
                 if quit_button.checkForInput(mouse_pos):
-                    running = False
-                    menu_running = False
+                    pygame.quit()
+                    exit()
 
         pygame.display.update()
 
-def pause_menu():
+
+def pause_menu(screen, bg):
     menu_running = True
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    bg = pygame.image.load('assets/images/background.png')
 
     while menu_running:
-        screen.fill((0, 0, 0))
+        screen.blit(bg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
         pause_text = get_font(100).render("PAUSED", True, (255, 255, 255))
@@ -125,21 +117,20 @@ def pause_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                menu_running = False
-                return False
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if continue_button.checkForInput(mouse_pos):
                     menu_running = False  # Exit pause menu to continue the game
                 if quit_button.checkForInput(mouse_pos):
-                    menu_running = False
-                    return False
+                    pygame.quit()
+                    exit()
 
         pygame.display.update()
     return True
 
-def game_over_menu():
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    bg = pygame.image.load('assets/images/background.png')
+
+def game_over_menu(screen, bg):
     menu_running = True
 
     while menu_running:
@@ -175,22 +166,23 @@ def game_over_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                return False
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if main_menu_button.checkForInput(mouse_pos):
                     main()  # Restart the game loop
                 if quit_button.checkForInput(mouse_pos):
-                    return False  # Quit the game
+                    pygame.quit()
+                    exit()
 
         pygame.display.update()
 
-def you_win_menu():
+
+def you_win_menu(screen, bg):
     menu_running = True
-    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    bg = pygame.image.load('assets/images/background.png')
 
     while menu_running:
-        screen.fill((0, 0, 0))
+        screen.blit(bg, (0, 0))
         mouse_pos = pygame.mouse.get_pos()
 
         won_text = get_font(80).render("YOU WIN!", True, (255, 255, 255))
@@ -223,14 +215,14 @@ def you_win_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                menu_running = False
-                return False
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if restart_button.checkForInput(mouse_pos):
                     main()
                 if quit_button.checkForInput(mouse_pos):
-                    menu_running = False
-                    return False
+                    pygame.quit()
+                    exit()
 
         pygame.display.update()
     return False
@@ -256,6 +248,9 @@ def main():
     desired_height = 20
     filled_heart_img = pygame.transform.scale(filled_heart_img, (desired_width, desired_height))
 
+    # Load background and scale it to fit the window
+    bg = load_and_scale_background('assets/images/background.png', WINDOW_WIDTH, WINDOW_HEIGHT)
+
     # Resolución interna
     render_surface = pygame.Surface((WIDTH, HEIGHT))
     scale_x = WINDOW_WIDTH / WIDTH
@@ -267,7 +262,7 @@ def main():
     # Pelota
     balls = []
 
-    level = show_menu()
+    level = show_menu(screen, bg)
     # Ladrillos
     level_loader = LevelLoader(level)
     level_data = level_loader.load_level()
@@ -289,10 +284,11 @@ def main():
 
         for event in events:
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_p: # incorporando el menu de pausa
-                    if not pause_menu():
+                    if not pause_menu(screen, bg):
                         running = False
                         return
 
@@ -305,14 +301,14 @@ def main():
             for ball in balls:
                 lives, spawn_new_ball, running = ball.move(paddle, balls, lives, spawn_new_ball)
                 if not running:
-                    game_over_menu()
+                    game_over_menu(screen, bg)
                     break
 
             if spawn_new_ball:
                 # Spawn a new ball on the paddle
-                new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 10)
-                balls.append(new_ball)
+                powerup_system.shoot_mode = True
                 spawn_new_ball = False
+
 
         bricks_to_remove = []
 
@@ -346,7 +342,7 @@ def main():
             brick.draw(render_surface)
 
         if not bricks:
-            running = you_win_menu()
+            running = you_win_menu(screen, bg)
             if not running:
                 break
 
