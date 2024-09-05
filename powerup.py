@@ -2,18 +2,18 @@ import pygame
 import time
 import math
 from ball import Ball
-from settings import HEIGHT, WIDTH, POWERUP_IMAGES, BALL_SPEED
+from settings import HEIGHT, WIDTH, POWERUP_IMAGES
 
 class PowerUp:
     def __init__(self, x, y, powerup_type, image):
         self.image = pygame.image.load(image)
         self.rect = self.image.get_rect(center=(x, y))
         self.powerup_type = powerup_type
-        self.speed = 1
+        self.speed = 2
 
     def move(self):
         self.rect.y += self.speed
-    
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
@@ -21,7 +21,7 @@ class PowerUp:
         return self.powerup_type
 
 class PowerUpSystem:
-    def __init__(self, powerup_duration=8):
+    def __init__(self, powerup_duration=5):
         self.active_powerups = []
         self.active_effects = []
         self.powerup_duration = powerup_duration
@@ -94,11 +94,12 @@ class PowerUpSystem:
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self._shoot_new_ball(paddle, balls)
-                self.shoot_mode = False 
+                self.shoot_mode = False
 
     def _shoot_new_ball(self, paddle, balls):
-        speed_x = BALL_SPEED * math.cos(self.pointer_angle)
-        speed_y = BALL_SPEED * math.sin(self.pointer_angle)
+        speed = 5
+        speed_x = speed * math.cos(self.pointer_angle)
+        speed_y = speed * math.sin(self.pointer_angle)
 
         new_ball = Ball(paddle.rect.centerx, paddle.rect.top - 10)
         new_ball.speed_x = speed_x
@@ -152,7 +153,7 @@ class PowerUpSystem:
         bar_width = icon_size
         bar_height = 5
         bar_x = icon_x
-        bar_y = icon_y + icon_size + 2 
+        bar_y = icon_y + icon_size + 2
 
         time_bar_rect = pygame.Rect(bar_x, bar_y, bar_width * time_remaining_ratio, bar_height)
         pygame.draw.rect(screen, (0, 255, 0), time_bar_rect)

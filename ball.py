@@ -1,6 +1,5 @@
 import pygame
-import math
-from settings import WIDTH, HEIGHT, BALL_SPEED
+from settings import WIDTH, HEIGHT
 from paddle import Paddle
 from brick import Brick
 
@@ -8,99 +7,94 @@ class Ball:
     def __init__(self, x, y):
         self.image = pygame.image.load("assets/images/ball.png")
         self.rect = self.image.get_rect(topleft=(x, y))
-        self.angle = math.radians(45)  # Initial angle of movement in radians
-        self.update_speed_components()
-
-        # Log initial speed and modulus
-        self.log_speed("Initial speed")
-
-    def update_speed_components(self):
-        self.speed_x = BALL_SPEED * math.cos(self.angle)
-        self.speed_y = -BALL_SPEED * math.sin(self.angle)  # Negative to move upwards initially
-
-    def normalize_speed(self):
-        speed = math.sqrt(self.speed_x ** 2 + self.speed_y ** 2)
-        self.speed_x = (self.speed_x / speed) * BALL_SPEED
-        self.speed_y = (self.speed_y / speed) * BALL_SPEED
-
-        # Log normalized speed and modulus
-        self.log_speed("Normalized speed")
-
-    def log_speed(self, context):
-        speed_modulus = math.sqrt(self.speed_x ** 2 + self.speed_y ** 2)
-        print(f"{context}: ({self.speed_x:.2f}, {self.speed_y:.2f}), Modulus: {speed_modulus:.2f}")
+        self.speed_x = 3
+        self.speed_y = -2
+        self.is_still_col_hor = False
+        self.is_still_col_ver = False
 
     def move(self, paddle, balls, lives, spawn_new_ball):
         self.rect.x += self.speed_x
         self.rect.y += self.speed_y
         running = True
 
-        # Wall collisions
-        if self.rect.left <= 0:  # Hit the left wall
-            self.rect.left = 0
-            self.angle = math.pi - self.angle  # Reflect the angle horizontally
-            self.update_speed_components()
-            print("Collision: Left wall")
-            self.log_speed("After collision with Left wall")
+        # Rebote de izquierda a derecha
+        if self.rect.left <= 0 or self.rect.right >= WIDTH:
+            if not self.is_still_col_hor:
+                self.speed_x = -self.speed_x
+                self.is_still_col_hor = True
+        else:
+            self.is_still_col_hor = False
 
-        elif self.rect.right >= WIDTH:  # Hit the right wall
-            self.rect.right = WIDTH
-            self.angle = math.pi - self.angle  # Reflect the angle horizontally
-            self.update_speed_components()
-            print("Collision: Right wall")
-            self.log_speed("After collision with Right wall")
-
-        if self.rect.top <= 0:  # Hit the top wall
-            self.rect.top = 0
-            self.angle = -self.angle  # Reflect the angle vertically
-            self.update_speed_components()
-            print("Collision: Top wall")
-            self.log_speed("After collision with Top wall")
-
-        elif self.rect.bottom >= HEIGHT:  # Hit the bottom (player loses a life)
-            if len(balls) == 1:  # Check if it's the last ball
+        # Rebote de arriba y abajo
+        if self.rect.top <= 0:
+            if not self.is_still_col_ver:
+                self.speed_y = -self.speed_y
+                self.is_still_col_ver = True
+        elif self.rect.bottom >= HEIGHT:
+            if len(balls) == 1:  # revisar si es que es la ultima pelota
                 lives -= 1
                 if lives > 0:
                     spawn_new_ball = True
                 else:
                     running = False
-            balls.remove(self)  # Remove the ball
-            print("Collision: Bottom wall")
-            self.log_speed("After collision with Bottom wall")
+            balls.remove(self)  # sacar la pelota
+        else:
+            self.is_still_col_ver = False
 
         return lives, spawn_new_ball, running
 
+
     def check_collision(self, obj):
         if self.rect.colliderect(obj.rect):
+            # Si es un paddle
             if isinstance(obj, Paddle):
-                # Calculate the point of impact
+                # Rebote vertical
+                if self.rect.centery < obj.rect.centery:
+                    self.rect.bottom = obj.rect.top
+                else:
+                    self.rect.top = obj.rect.bottom
+
+                # Cambiar dirección horizontal basada en la posición de la colisión
                 hit_pos = self.rect.centerx - obj.rect.left
-                hit_ratio = (hit_pos / obj.rect.width) - 0.5  # Ratio from -0.5 to 0.5
+                paddle_section = obj.rect.width // 5  # Divide el paddle en 5 secciones
 
-                # Adjust angle based on hit position
-                self.angle = math.radians(90) - (hit_ratio * math.radians(80))
-                self.update_speed_components()
-                print("Collision: Paddle")
-                self.log_speed("After collision with Paddle")
+                if hit_pos < paddle_section:
+                    self.speed_x = -3 # Más hacia la izquierda
+                    self.speed_y = -2
+                elif hit_pos < 2 * paddle_section:
+                    self.speed_x = -2 # Levemente hacia la izquierda
+                    self.speed_y = -3
+                elif hit_pos < 3 * paddle_section:
+                    self.speed_x = 0  # Rebote central, sin cambio horizontal
+                    self.speed_y = -4
+                elif hit_pos < 4 * paddle_section:
+                    self.speed_x = 2 # Levemente hacia la derecha
+                    self.speed_y = -3
+                else:
+                    self.speed_x = 3 # Más hacia la derecha
+                    self.speed_y = -2
 
+            # Si es un ladrillo (Lógica con bugs, necesita arreglarse)
             elif isinstance(obj, Brick):
-                # Calculate overlaps
+                # Calcula las distancias desde la bola a los bordes del ladrillo
                 overlap_x = min(self.rect.right - obj.rect.left, obj.rect.right - self.rect.left)
                 overlap_y = min(self.rect.bottom - obj.rect.top, obj.rect.bottom - self.rect.top)
 
-                # Determine which side is hit and reflect accordingly
+                # Determina la dirección del rebote en función del lado de colisión
                 if overlap_x < overlap_y:
-                    self.angle = math.pi - self.angle  # Reflect horizontally
-                    print("Collision: Brick (Horizontal)")
+                    # Rebote horizontal (chocando con los lados)
+                    if self.rect.centerx < obj.rect.centerx:
+                        self.rect.right = obj.rect.left
+                    else:
+                        self.rect.left = obj.rect.right
+                    self.speed_x = -self.speed_x
                 else:
-                    self.angle = -self.angle  # Reflect vertically
-                    print("Collision: Brick (Vertical)")
-
-                self.update_speed_components()
-                self.log_speed("After collision with Brick")
-
-            # Normalize speed after collision
-            self.normalize_speed()
+                    # Rebote vertical (chocando con la parte superior o inferior)
+                    if self.rect.centery < obj.rect.centery:
+                        self.rect.bottom = obj.rect.top
+                    else:
+                        self.rect.top = obj.rect.bottom
+                    self.speed_y = -self.speed_y
 
             return True
         return False
