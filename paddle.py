@@ -1,5 +1,6 @@
 import pygame
 from settings import WIDTH
+import sounds
 
 class Paddle:
     def __init__(self, x, y):
@@ -16,6 +17,7 @@ class Paddle:
             self.rect.x += self.speed
     
     def apply_powerup(self, powerup_type):
+        sounds.activate_powerup()
         if powerup_type == 'expand':
             self.rect.width = int(self.original_width * 1.5)
         elif powerup_type == 'shrink':
