@@ -7,12 +7,12 @@ pygame.mixer.init()
 bounce_sound = pygame.mixer.Sound('assets/sounds/bounce_sound.wav')
 block_destroyed_sound = pygame.mixer.Sound('assets/sounds/block_destroyed_sound.wav')
 powerup_sound = pygame.mixer.Sound('assets/sounds/powerup_sound.wav')
+lose_music = pygame.mixer.Sound('assets/music/lose-music.mp3')
+victory_music = pygame.mixer.Sound('assets/music/victory-music.mp3')
 
 # Cargar música
 menu_music = 'assets/music/menu-music.mp3'
 gameplay_music = 'assets/music/gameplay-music.mp3'
-lose_music = 'assets\music\lose-music.mp3'
-victory_music = 'assets/music/victory-music.mp3'
 
 # Cuando la pelota rebote
 def ball_hit():
@@ -41,13 +41,11 @@ def start_game():
 
 def game_over():
     stop_music()
-    play_music(lose_music)
-    stop_music()
+    lose_music.play()
 
 def victory():
     stop_music()
-    play_music(victory_music)
-    stop_music()
+    victory_music.play()
 
 def menu():
     play_music(menu_music)
