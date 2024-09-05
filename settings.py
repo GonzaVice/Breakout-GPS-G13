@@ -1,4 +1,5 @@
 # settings.py
+import os
 
 WIDTH = 320
 HEIGHT = 240
@@ -29,3 +30,19 @@ POWERUP_IMAGES = {
 
 AVAILABLE_POWERUPS = ['expand', 'duplicate', 'shoot']
 POWERUP_PROBABILITY = 0.0  # Adjust the probability as needed
+
+# Directorio raíz de assets
+ASSETS_DIR = os.path.join(os.path.dirname(__file__), '../assets')
+
+# Música
+MUSIC_DIR = os.path.join(ASSETS_DIR, 'music')
+MENU_MUSIC = os.path.join(MUSIC_DIR, 'menu-music.mp3')
+GAMEPLAY_MUSIC = os.path.join(MUSIC_DIR, 'gameplay-music.mp3')
+LOSE_MUSIC = os.path.join(MUSIC_DIR, 'lose-music.mp3')
+VICTORY_MUSIC = os.path.join(MUSIC_DIR, 'victory-music.mp3')
+
+# Efectos de sonido
+SOUNDS_DIR = os.path.join(ASSETS_DIR, 'sounds')
+BLOCK_DESTROYED_SOUND = os.path.join(SOUNDS_DIR, 'block_destroyed_sound.wav')
+BOUNCE_SOUND = os.path.join(SOUNDS_DIR, 'bounce_sound.wav')
+POWERUP_SOUND = os.path.join(SOUNDS_DIR, 'powerup_sound.wav')

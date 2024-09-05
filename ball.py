@@ -2,6 +2,7 @@ import pygame
 from settings import WIDTH, HEIGHT
 from paddle import Paddle
 from brick import Brick
+import sounds
 
 class Ball:
     def __init__(self, x, y):
@@ -20,6 +21,7 @@ class Ball:
         # Rebote de izquierda a derecha
         if self.rect.left <= 0 or self.rect.right >= WIDTH:
             if not self.is_still_col_hor:
+                sounds.ball_hit()
                 self.speed_x = -self.speed_x
                 self.is_still_col_hor = True
         else:
@@ -48,6 +50,7 @@ class Ball:
         if self.rect.colliderect(obj.rect):
             # Si es un paddle
             if isinstance(obj, Paddle):
+                sounds.ball_hit()
                 # Rebote vertical
                 if self.rect.centery < obj.rect.centery:
                     self.rect.bottom = obj.rect.top

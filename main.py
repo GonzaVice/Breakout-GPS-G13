@@ -6,6 +6,7 @@ from powerup import PowerUpSystem
 from utils import LevelLoader, get_font, draw_lives
 from button import Button
 from ball import Ball
+import sounds
 
 
 def load_and_scale_background(image_path, window_width, window_height):
@@ -14,6 +15,7 @@ def load_and_scale_background(image_path, window_width, window_height):
 
 
 def show_menu(screen, bg):
+    sounds.menu()
     menu_running = True
 
     while menu_running:
@@ -81,6 +83,7 @@ def show_menu(screen, bg):
 
 
 def pause_menu(screen, bg):
+    sounds.stop_music()
     menu_running = True
 
     while menu_running:
@@ -127,10 +130,12 @@ def pause_menu(screen, bg):
                     exit()
 
         pygame.display.update()
+    sounds.start_game()
     return True
 
 
 def game_over_menu(screen, bg):
+    sounds.game_over()
     menu_running = True
 
     while menu_running:
@@ -179,6 +184,7 @@ def game_over_menu(screen, bg):
 
 
 def you_win_menu(screen, bg):
+    sounds.victory()
     menu_running = True
 
     while menu_running:
@@ -263,6 +269,7 @@ def main():
     balls = []
 
     level = show_menu(screen, bg)
+    sounds.start_game()
     # Ladrillos
     level_loader = LevelLoader(level)
     level_data = level_loader.load_level()
@@ -301,6 +308,7 @@ def main():
             for ball in balls:
                 lives, spawn_new_ball, running = ball.move(paddle, balls, lives, spawn_new_ball)
                 if not running:
+                    sounds.game_over()
                     game_over_menu(screen, bg)
                     break
 
@@ -318,6 +326,7 @@ def main():
                 if ball.check_collision(brick):
                     if brick.take_hit() and brick not in bricks_to_remove:
                         bricks_to_remove.append(brick)
+                        sounds.brick_destroyed()
                         particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (200, 0, 0), count=15, type="circle")
                         particle_system.add_particles(brick.rect.centerx, brick.rect.centery, (255, 255, 0), count=5, type="square")
 
@@ -343,6 +352,7 @@ def main():
 
         if not bricks:
             running = you_win_menu(screen, bg)
+            sounds.victory()
             if not running:
                 break
 
